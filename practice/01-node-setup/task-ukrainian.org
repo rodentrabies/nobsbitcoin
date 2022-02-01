@@ -1,0 +1,267 @@
+* Практична робота 1 - розгортання власної Біткоїн-ноди
+
+** Вступ
+
+*Біткоїн-мережа* складається з *вершин* або *нод* які виконують декілька
+ функцій:
+  - передають між собою інформацію про блоки та транзакції (так званий протокол
+    пліток, англ gossip protocol),
+  - здійснюють валідацію всіх блоків та транзакцій, отриманих через
+    gossip-протокол,
+  - надають локальний інтерфейс для перегляду історичних транзакційних даних для
+    використання гаманцями та іншим користувацьким програмним забезпеченням.
+
+Початкова еталонна реалізація Біткоїн-ноди була створена Сатоші Накамото в
+період з 2007 по 2010 роки. Багато розробників приєдналось до проєкту після
+публікації статті 2008 року. 2010 року Сатоші передав контроль над репозиторієм
+Гейвіну Андерсену, який через деякий час відійшов від розробки і почав займатись
+іншими проєктами. На даний момент репозиторій підтримується Владіміром ван дер
+Ланом ([[https://github.com/laanwj][@laanwj]] на [[https://github.com][github.com]]). Проєкт реалізовано мовою С++, а тестову систему -
+мовою Python.
+
+У цій практичній роботі ми склонуємо репозиторій з програмним кодом еталонної
+реалізації Біткоїн-ноди, зберемо з цього програмного коду відповідні виконувані
+файли, встановимо їх локально і подивимось на реальні дані ланцюга блоків
+Біткоїн за допомогою консольного інструмента ~bitcoin-cli~, що постачається
+разом з Біткоїн-нодою.
+
+Окрім еталонної, існують і альтернативні реалізації протоколу Біткоїн різного
+рівня завершеності та написані різними мовами програмування, наприклад
+  - [[https://github.com/btcsuite/btcd][btcd]] мовою Golang,
+  - [[https://github.com/rust-bitcoin/rust-bitcoin][rust-bitcoin]] мовою Rust
+а також бібліотеки, що реалізують частини Біткоїн-протоколу для різноманітних
+цілей:
+  - [[https://github.com/petertodd/python-bitcoinlib][python-bitcoinlib]] - бібліотека-клієнт мовою Python,
+  - [[https://bitcoinj.org/][bitcoinj]] - бібліотека-клієнт мовою Java,
+  - [[https://github.com/bitcoinjs/bitcoinjs-lib][BitcoinJS]] - бібліотека-клієнт мовою JS.
+
+
+** Інструкції
+
+Програмний код еталонної реалізації Біткоїн-ноди можна знайти за посиланням
+
+  https://github.com/bitcoin/bitcoin
+
+Ми можемо склонувати репозиторій, що містить всю історію змін бази коду
+наступною командою:
+
+#+BEGIN_SRC sh
+  git clone https://github.com/bitcoin/bitcoin
+#+END_SRC
+
+Тепер ми можемо перейти в корінь склонованого репозиторія та обрати версію бази
+коду, що відповідає останньому релізу Біткоїн-ноди (v0.21.0):
+
+#+BEGIN_SRC sh
+  cd bitcoin
+  git checkout v0.21.0
+#+END_SRC
+
+Після цього необхідно виконати інструкції зі збору відповідних виконуваних
+файлів з програмого коду. Ці інструкції можна знайти в директорії ~doc/~
+(відносно кореня репозиторія), або онлайн за наступними посиланнями:
+  - Linux: https://github.com/bitcoin/bitcoin/blob/master/doc/build-unix.md
+  - macOS: https://github.com/bitcoin/bitcoin/blob/master/doc/build-osx.md
+  - Windows: https://github.com/bitcoin/bitcoin/blob/master/doc/build-windows.md
+
+Для дистрибутивів Linux на основі Debian (наприклад Ubuntu), процедура збору
+програмного забезпечення наступна:
+
+#+BEGIN_SRC sh
+  # встановлюємо залежності:
+  sudo apt install build-essential libtool autotools-dev automake pkg-config bsdmainutils python3
+  sudo apt install libevent-dev libboost-dev libboost-system-dev libboost-filesystem-dev libboost-test-dev
+  # встановлюємо залежності гаманця (SQLite and BerkeleyDB):
+  sudo apt install libsqlite3-dev
+  ./contrib/install_db4.sh $(pwd)
+  export BDB_PREFIX=$(pwd)/db4
+  # налаштовуємо параметри і виконуємо збір ПЗ (це займе трохи часу)
+  ./autogen.sh
+  ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include"
+  make
+  # нарешті, встановлюємо виконувані файли локально:
+  sudo make install
+#+END_SRC
+
+Після цього перевіряємо, чи програмне забезпечення було встановлено правильно:
+
+#+BEGIN_SRC sh
+  $ which bitcoind
+  /usr/local/bin/bitcoind
+  $ which bitcoin-cli
+  /usr/local/bin/bitcoin-cli
+#+END_SRC
+
+Тепер, в "домашній" директорії на вашій машині створюємо директорію під назвою
+~.bitcoin~ і пишемо файл конфігурації для Біткоїн-ноди. Зверніть увагу, що всі
+дані ланцюга блоків будуть зберігатись у цій директорії, тому якщо ви маєте
+намір синхронізувати основний ланцюг, переконайтесь, що розділ диска, на якому
+розміщено дану директорію, має хоча б 350 Гб вільного місця.
+
+#+BEGIN_SRC sh
+  cd ~
+  mkdir .bitcoin
+  touch .bitcoin/bitcoin.conf
+#+END_SRC
+
+Для того, щоб налаштувати Біткоїн-демон (Біткоїн-ноду, що буде працювати у
+фоновому режимі) необхідно відкрити файл =~/.bitcoin/bitcoin.conf= у текстовому
+редакторі за вибором і додати у файл наступний текст (замінюючи ~<username>~ and
+~<password>~ на довільні значення):
+
+#+BEGIN_SRC sh
+  # RPC settings
+  rpcuser=<username>
+  rpcpassword=<password>
+  
+  # Network settings
+  txindex=1
+  server=1
+  rest=1
+  
+  # Miscellaneous
+  zmqpubrawblock=tcp://127.0.0.1:28332
+  zmqpubrawtx=tcp://127.0.0.1:28333
+  printtoconsole=1
+#+END_SRC
+
+Тепер ми нарешті можемо запустити Біткоїн-ноду і спостерігати, як програмне
+забезпечення розпочинає процес синхронізації:
+
+#+BEGIN_SRC sh
+  $ bitcoind
+#+END_SRC
+
+Для того щоб "демонізувати" Біткоїн-ноду ("згорнути" її у фоновий режим і
+відв'язати від термінала, у якому ми працюємо), необхідно виконати команду
+
+#+BEGIN_SRC sh
+  $ bitcoind -daemon
+#+END_SRC
+
+Також ми можемо запустити Біткоїн-ноду в режимі regtest. Режим regtest - це
+спеціальний режим, що дозволяє користувачу генерувати новий ланцюг з нульового
+блока у тестувальних цілях. Для того, щоб запустити Біткоїн-ноду в режимі
+regtest, необхідно виконати наступну команду
+
+#+BEGIN_SRC sh
+  $ bitcoind -regtest -daemon
+#+END_SRC
+
+В режимі regtest ми можемо генерувати нові блоки у ланцюгу вручну
+
+#+BEGIN_SRC sh
+  $ bitcoin-cli -regtest generatetoaddress 101 $(bitcoin-cli -regtest getnewaddress)
+  $ bitcoin-cli -regtest getbalance
+  50.00000000
+#+END_SRC
+
+*Запитання для самостійного дослідження*:
+  - скільки блоків було згенеровано командою ~generatetoaddress~ з попереднього
+    прикладу?
+  - скільки нових біткоїнів було згенеровано командою ~generatetoaddress~ з
+    попередньго прикладу?
+  - чому баланс гаманця становить 50 біткоїнів?
+
+Поточний ланцюг блоків можна переглядати за допомогою наступних команд:
+
+#+BEGIN_SRC sh
+  $ bitcoin-cli getblockcount
+  672754
+
+  $ bitcoin-cli getbestblockhash
+  0000000000000000000893527ec1507a2e6f2903905ef23def9b246e2f9ab919
+
+  $ bitcoin-cli getblock 0000000000000000000893527ec1507a2e6f2903905ef23def9b246e2f9ab919
+  {
+    "hash": "0000000000000000000893527ec1507a2e6f2903905ef23def9b246e2f9ab919",
+    "confirmations": 1,
+    "strippedsize": 892626,
+    "size": 1315444,
+    "weight": 3993322,
+    "height": 672754,
+    "version": 1073733632,
+    "versionHex": "3fffe000",
+    "merkleroot": "d9cf3ae978efaf5d1bf653e4d802203ffa577edec10955a1e2573ab17a1a69be",
+    "tx": [
+      "ddf7629c3870d7332c6d9680c551bd462150d3174ff82694b97fb998f31767d7",
+      "28dbc5e1c022f735cb136ee4edea10eff713bd705199de38c22212e3d94f3e59",
+      "da2fcddef5cf711f7e4a4b9a6aca8deaf9cf6f04b3466e4a04fa2888af30ef5e",
+      "be7e0364b9b04dc702edc1684c2582d7e0be8ea9b98fe711d362d98b3d1aa3f5",
+      ...
+    ],
+    "time": 1614640390,
+    "mediantime": 1614635907,
+    "nonce": 1041734966,
+    "bits": "170cf4e3",
+    "difficulty": 21724134900047.27,
+    "chainwork": "00000000000000000000000000000000000000001a136cf0de3a02b63e63658d",
+    "nTx": 1804,
+    "previousblockhash": "00000000000000000001d9eb054f5b01adfc73eba97841132c015d8b7b36333f"
+  }
+  
+  $ bitcoin-cli getrawtransaction ddf7629c3870d7332c6d9680c551bd462150d3174ff82694b97fb998f31767d7
+  020000000001010000000000000000000000000000000000000000000000000000000000000000...
+
+  $ bitcoin-cli decoderawtransaction 02000000000101...
+  {
+    "txid": "ddf7629c3870d7332c6d9680c551bd462150d3174ff82694b97fb998f31767d7",
+    "hash": "d9fe834d47432f87242a13a4a5111e1ce2e9bf10bd248d512c822708a7f104c9",
+    "version": 2,
+    "size": 291,
+    "vsize": 264,
+    "weight": 1056,
+    "locktime": 0,
+    "vin": [
+      {
+        "coinbase": "03f2430a04fd743d60626a30322f48756f42692ffabe6d6df2bd997e82670a9759baf4a7c8e127abf0a4b6ad7baafd6653e8699ebbf15266010000008df9e483020061ce325a010000000000",
+        "txinwitness": [
+          "0000000000000000000000000000000000000000000000000000000000000000"
+        ],
+        "sequence": 4294967295
+      }
+    ],
+    "vout": [
+      {
+        "value": 7.49384804,
+        "n": 0,
+        "scriptPubKey": {
+          "asm": "OP_DUP OP_HASH160 52f43a457374d1a0a3e58d23ec7b5576c4eb649c OP_EQUALVERIFY OP_CHECKSIG",
+          "hex": "76a91452f43a457374d1a0a3e58d23ec7b5576c4eb649c88ac",
+          "reqSigs": 1,
+          "type": "pubkeyhash",
+          "addresses": [
+            "18Zcyxqna6h7Z7bRjhKvGpr8HSfieQWXqj"
+          ]
+        }
+      },
+      {
+        "value": 0.00000000,
+        "n": 1,
+        "scriptPubKey": {
+          "asm": "OP_RETURN aa21a9edef9d63ad3b4bd4072c44491b50274cc20c7d83b8cdc310a7dce694f817ee794d",
+          "hex": "6a24aa21a9edef9d63ad3b4bd4072c44491b50274cc20c7d83b8cdc310a7dce694f817ee794d",
+          "type": "nulldata"
+        }
+      },
+      {
+        "value": 0.00000000,
+        "n": 2,
+        "scriptPubKey": {
+          "asm": "OP_RETURN b9e11b6d044ae531621763ccc43ce9d3335131b2b3d1e447768d7da955eea39ec6a63be5",
+          "hex": "6a24b9e11b6d044ae531621763ccc43ce9d3335131b2b3d1e447768d7da955eea39ec6a63be5",
+          "type": "nulldata"
+        }
+      }
+    ]
+  }
+#+END_SRC
+
+
+** Демонстрація та запитання
+
+Для захисту практичної роботи необхідно продемонструвати склонований репозиторій
+проєкту, запущену Біткоїн-ноду та виконання команд для перегляду поточного
+ланцюга блоків. Окрім того, необхідно знайти відповіді на запитання для
+самостійного дослідження, наведені вище, та бути готовими до запитань по
+матеріалах лекцій 1-3.

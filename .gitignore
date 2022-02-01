@@ -1,0 +1,11 @@
+*~
+*.el
+*.aux
+*.bcf
+*.log
+*.nav
+*.out
+*.run.xml
+*.snm
+*.toc
+*.vrb

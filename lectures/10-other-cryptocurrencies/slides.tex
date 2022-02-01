@@ -1,0 +1,325 @@
+\documentclass{beamer}
+
+
+\usepackage{amsmath}
+\usepackage[style=alphabetic,url=true]{biblatex}
+\usepackage{environ}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[cache=false]{minted}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{calrsfs}
+\usepackage{animate}
+\usepackage{xmpmulti}
+
+
+% \usetheme{Bergen}
+
+\usecolortheme{beaver}
+
+\setbeamertemplate{itemize item}[circle]
+\setbeamertemplate{itemize subitem}{--}
+\addtobeamertemplate{navigation symbols}{}{
+  \usebeamerfont{footline}%
+  \usebeamercolor[fg]{footline}%
+  \hspace{1em}%
+  \insertframenumber/\inserttotalframenumber
+}
+\graphicspath{ {./graphics/} }
+\setminted[Python]{
+  fontsize=\tiny
+}
+\setminted[Lisp]{
+  fontsize=\tiny
+}
+\BeforeBeginEnvironment{minted}{\medskip}
+\AfterEndEnvironment{minted}{\medskip}
+\usetikzlibrary{matrix}
+\tikzset{
+  stack/.style={
+    matrix of nodes,
+    nodes={
+      fill=lightgray,draw,text=black,font=\sffamily\bfseries,
+      text height=11pt,text depth=3pt,baseline=center, minimum width=1cm
+    },
+    column sep=-\pgflinewidth/2
+  }
+}
+
+\title{
+  Bitcoin and Cryptocurrency Technologies \\
+  Lecture 10: Other Cryptocurrencies
+}
+
+\author{Yuri Zhykin}
+\date{May 30, 2021}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+  \frametitle{Problems and Solutions}
+  \begin{itemize}
+  \item As of 2021, there is more than 4000 cryptocurrencies, most of which
+    have no useful application.
+  \item Various cryptocurrencies claim to ``solve'' one or several problems of
+    Bitcoin protocol, such as:
+    \begin{itemize}
+    \item weak/inflexible scripting system,
+    \item mining centralization,
+    \item energy consumption,
+    \item \textbf{transaction privacy}.
+    \end{itemize}
+  \item Bitcoin, unlike most other cryptocurrency systems, does not have a
+    \textbf{central governing body}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Scripting System 1/3}
+  \begin{itemize}
+  \item One of the first ideas of the ``next generation'' cryptocurrencies: make
+    the transaction validation language Turing-complete to allow arbitrary
+    ``smart contracts''.
+  \item A \textbf{smart contract} is a \textbf{self-executing} contract with the
+    terms of the agreement between the parties specified as code.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Scripting System 2/3}
+  \begin{itemize}
+  \item Bitcoin Script is a \textbf{simple stack-based Turing-incomplete}
+    language by design.
+  \item Bitcoin's approach:
+    \begin{itemize}
+    \item simple language is easier to analyze for incorrect behavior
+    \item Turing-incompleteness prevents infinite loops and undefined behavior
+    \item most ``smart contracts'' are simple enough to be expressed in Bitcoin
+      Script
+    \item ``smart contracts'' that cannot be expressed in Bitcoin Script,
+      can/should be implemented as second-layer protocols
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Scripting System 3/3}
+  \begin{itemize}
+  \item Main types of smart contracts on Ethereum platform:
+    \begin{itemize}
+    \item Fungible tokens similar to stocks (ICOs based on ERC-20 protocol,
+      2017).
+    \item Non-fungible collectible tokens like CryptoKitties (2017) or NFTs
+      (2020).
+    \item Digital identity management.
+    \end{itemize}
+  \item All of the above can be implemented on top of Bitcoin using the
+    \textbf{RGB protocol} within the Lightning Network, providing both
+    \textbf{contract flexibility} and \textbf{scalability}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Mining Centralization 1/2}
+  \begin{itemize}
+  \item Bitcoin's Proof-of-Work system uses simple SHA-256d (double SHA-256)
+    algorithm.
+  \item SHA-256d can be easily implemented in specialized hardware
+    (\textbf{ASICs} - \textbf{Application specific integrated circuits}.
+  \item As of 2021, Bitcoin is mined solely on ASICs, as any generic purpose
+    hardware is way to slow to be profitable.
+  \item Bitcoin ASICs are mostly produced in China, which, combined with the low
+    electricity costs, resulted in an accumulation of significant amounts of
+    \textbf{hash-power} in mainland China.
+  \item Some people within cryptocurrency community consider ASIC resistance to
+    be an important characteristic of the ``next generation'' cryptocurrency
+    system.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Mining Centralization 1/2}
+  \begin{itemize}
+  \item Bitcoin's point of view:
+    \begin{itemize}
+    \item ASICs are slowly approaching theoretical efficiency limits, so there
+      is less incentive to install them close to the manufacturer (i.e. in
+      China),
+    \item a decentralization tendency has been observed in the last several
+      years - more mining operations are being set up in other countries,
+    \item that said, there are discussions of a potential change of the PoW
+      algorithm in a distant future.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Energy Consumption}
+  \begin{itemize}
+  \item Lately, Bitcoin is being aggressively criticized by the mainstream
+    media for its total energy consumption.
+  \item Most of the claims on Bitcoin's energy consumption show little to no
+    understanding of both Bitcoin and electricity usage:
+    \begin{itemize}
+    \item excess electricity cannot be stored,
+    \item miners are incentivized to put their equipment close to cheap excess
+      electricity sources,
+    \item a consumer consumes too much electricity iff it causes electrical grid
+      outages in the area where consumption occurs, otherwise it's just excess
+      electricity consumption,
+    \item value proposition of Bitcoin far outweighs the costs of electricity
+      consumed.
+    \end{itemize}
+  \item This has been discussed in great details by Nic Carter on Twitter.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Proof of Stake}
+  \begin{itemize}
+  \item \textbf{Proof of stake} (PoS) protocols are a class of consensus
+    mechanisms for blockchains that work by selecting validators in proportion
+    to their quantity of holdings in the associated cryptocurrency.
+  \item The first functioning use of PoS for cryptocurrency was Peercoin in
+    2012.
+  \item Proof of stake violates the energy-based interpretation of decentralized
+    consensus: \textbf{Bitcoin blocks are secured by large amounts of energy
+      needed to generate one}.
+  \item ``Proof of Stake is why Proof of Work was invented.'' - @notgrubles on
+    Twitter.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Transaction Privacy 1/2}
+  \begin{itemize}
+  \item Bitcoin block chain data is transparent: for every ``chunk'' of bitcoin
+    created by a coinbase transaction, the whole transaction history can be
+    followed by simply looking at the chain data.
+  \item Bitcoin addresses are \textbf{pseudonymous}: outputs to the same address
+    can be easily tied together.
+  \item As a result, Bitcoin chain is susceptible to \textbf{chain analysis}
+    that in some cases allows to establish the sender and the recipient of the
+    bitcoin (the amount is publicly visible directly).
+  \item This makes Bitcoin hard to use as a currency for daily payments, where
+    transaction privacy is essential (salary, medication bills, etc).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Transaction Privacy 2/2}
+  \begin{itemize}
+  \item Lightning Network significantly improves transaction privacy by moving
+    most of the transactions off chain.
+  \item Channel open and channel close transactions are still visible on chain.
+  \item Proposals to implement privacy features on Bitcoin \textbf{sidechains}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Case Study: Ethereum 1/2}
+  \begin{itemize}
+  \item Created by Vitalik Buterin - a Russian-Canadian programmer and an active
+    member of Bitcoin community in the early days.
+  \item Launched in 2014.
+  \item Main difference from Bitcoin: Turing-complete smart contract language
+    Solidity with JavaScript-like syntax.
+  \item In order to avoid the infinite loops and transaction spam, Ethereum's
+    fee system requires users to pay for operations executed by their smart
+    contracts - this is called \textbf{paying for gas}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Case Study: Ethereum 2/2}
+  \begin{itemize}
+  \item Turing-completeness of the Ethereum was the reason behind the infamous
+    ``DAO hack'' - loss of a large amount of funds in 2016 that caused
+    \textbf{the Ethereum governing body to revert a transaction via a hard
+      fork}.
+  \item An investigation in 2019 indicated that 60\% of Ethereum nodes were
+    running in the cloud on centralized platforms like AWS.
+  \item Ethereum's scalability problem is even worse than that of Bitcoin: full
+    archive is approximately 7.3 Tb of data, while the regular pruned node size
+    is 300 Gb.
+  \item Ethereum network is determined to move to a Proof-of-Stake system.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Case Study: Monero 1/2}
+  \begin{itemize}
+  \item Based on the CryptoNote protocol described by a pseudonymous entity
+    \textbf{Nickolas van Saberhagen}.
+  \item Created by a pseudonymous individual \textbf{thankful\_for\_today} who
+    forked the codebase of CryptoNote-based coin Bytecoin and launched the
+    network.
+  \item Similar to Bitcoin, has no central governing body.
+  \item Very simple transaction structure with no scripting system.
+  \item ASIC-resistant Proof-of-Work algorithm.
+  \item Variable block size, short period between blocks (2 minutes).
+  \item Protocol upgrades are performed via \textbf{planned hard forks}, which
+    is only feasible because the network is comparatively small.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Case Study: Monero 2/2}
+  \begin{itemize}
+  \item Based on the CryptoNote protocol described by a pseudonymous entity
+    \textbf{Nicolas van Saberhagen}.
+  \item Created by a pseudonymous individual \textbf{thankful\_for\_today} who
+    forked the codebase of CryptoNote-based coin Bytecoin and launched the
+    network.
+  \item Has a very simple transaction structure with no scripting system.
+  \item The privacy of Monero is achieved by concealing the following
+    information:
+    \begin{itemize}
+    \item the sender of the money via the \textbf{ring signatures},
+    \item the receiver of the money via the \textbf{stealth addresses},
+    \item the amount sent via the Confidential Transactions system that encrypts
+      the amounts in transaction but allows to check that the amount spend is
+      greater than the amount received.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Conclusions}
+  \begin{itemize}
+  \item Bitcoin and Monero are the only cryptocurrencies whose creators are no
+    longer engaging with the community.
+  \item Satoshi Nakamoto never appeared online since 2011.
+  \item Some people believe Satoshi disappeared to prevent any entity, including
+    themselves, from manipulating the community using their name, identity,
+    sentimental role, or the amount of bitcoin they presumably own.
+  \item Bitcoin community is very conservative regarding the protocol changes,
+    and network safety and stability are considered the most important goals.
+  \item Features that Bitcoin lacks can often be implemented as layer-2
+    solutions.
+  \item Transaction privacy is one of the first priority goals (after safety and
+    stability).
+  \item \textbf{Do we need other cryptocurrencies?}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{The End}
+  \begin{center}
+    Thank you!
+  \end{center}
+\end{frame}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

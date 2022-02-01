@@ -1,0 +1,32 @@
+* noBSBitcoin
+
+This is a root directory for the course materials for the "Bitcoin and
+Cryptocurrency Technologies" course.
+
+** Lectures
+Lecture slides:
+  - [[file:lectures/01-economics-and-history/slides.pdf][Lecture 01 - Economics and History]]
+    # [[file:lectures/01-economics-and-history/slides.tex][LaTeX source]]
+  - [[file:lectures/02-cryptography-basics-1/slides.pdf][Lecture 02 - Cryptography Basics 1/2]]
+    # [[file:lectures/02-cryptography-basics-1/slides.tex][LaTeX source]]
+  - [[file:lectures/03-cryptography-basics-2/slides.pdf][Lecture 03 - Cryptography Basics 2/2]]
+    # [[file:lectures/03-cryptography-basics-2/slides.tex][LaTeX source]]
+  - [[file:lectures/04-bitcoin-data-model/slides.pdf][Lecture 04 - Bitcoin Data Model]]
+    # [[file:lectures/04-bitcoin-data-model/slides.tex][LaTeX source]]
+  - [[file:lectures/05-bitcoin-transactions/slides.pdf][Lecture 05 - Bitcoin Transactions]]
+    # [[file:lectures/05-bitcoin-transactions/slides.tex][LaTeX source]]
+  - [[file:lectures/06-bitcoin-network/slides.pdf][Lecture 06 - Bitcoin Network]]
+    # [[file:lectures/06-bitcoin-network/slides.tex][LaTeX source]]
+  - [[file:lectures/07-bitcoin-protocol/slides.pdf][Lecture 07 - Bitcoin Protocol]]
+    # [[file:lectures/07-bitcoin-protocol/slides.tex][LaTeX source]]
+  - [[file:lectures/08-bitcoin-wallet-software/slides.pdf][Lecture 08 - Bitcoin Wallet Software]]
+    # [[file:lectures/08-bitcoin-wallet-software/slides.tex][LaTeX source]]
+  - [[file:lectures/09-bitcoin-scaling/slides.pdf][Lecture 09 - Bitcoin Scaling]]
+    # [[file:lectures/09-bitcoin-scaling/slides.tex][LaTeX source]]
+  - [[file:lectures/10-other-cryptocurrencies/slides.pdf][Lecture 10 - Other Cryptocurrencies]]
+    # [[file:lectures/10-other-cryptocurrencies/slides.tex][LaTeX source]]
+
+
+** Practice
+Practice tasks:
+  - [[file:practice/01-node-setup/task.org][Task 01 - Running Your Own Bitcoin Node]]
