@@ -1,0 +1,10 @@
+* Task 2 - Interacting with Bitcoin Network via CLI
+
+** Introduction
+TODO.
+
+** Instructions
+TODO.
+
+** Demo and Questions
+TODO.

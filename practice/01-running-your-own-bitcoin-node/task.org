@@ -1,4 +1,4 @@
-* Lab 1 - Running your own Bitcoin node
+* Task 1 - Running your own Bitcoin node
 
 ** Introduction
 

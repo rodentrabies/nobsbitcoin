@@ -4,7 +4,7 @@ This is a root directory for the course materials for the "Bitcoin and
 Cryptocurrency Technologies" course.
 
 ** Lectures
-Lecture slides:
+Lecture slides (English):
   - [[file:lectures/01-economics-and-history/slides.pdf][Lecture 01 - Economics and History]]
     # [[file:lectures/01-economics-and-history/slides.tex][LaTeX source]]
   - [[file:lectures/02-cryptography-basics-1/slides.pdf][Lecture 02 - Cryptography Basics 1/2]]
@@ -28,5 +28,10 @@ Lecture slides:
 
 
 ** Practice
-Practice tasks:
-  - [[file:practice/01-node-setup/task.org][Task 01 - Running Your Own Bitcoin Node]]
+Practice tasks (English):
+  - [[file:practice/01-running-your-own-bitcoin-node/task.org][Task 01 - Running Your Own Bitcoin Node]]
+  - [[file:practice/02-interacting-with-bitcoin-from-command-line/task.org][Task 02 - Interacting with Bitcoin from Command Line]]
+
+Практичні завдання (українською):
+  - [[file:practice/01-running-your-own-bitcoin-node/task-ukrainian.org][Завдання 01 - Розгортання власної Біткоїн-ноди]]
+  - [[file:practice/02-interacting-with-bitcoin-from-command-line/task-ukrainian.org][Завдання 02 - Взаємодія з Біткоїн-мережею з командного рядка]]
