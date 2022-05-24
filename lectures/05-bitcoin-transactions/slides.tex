@@ -52,7 +52,7 @@
 }
 
 \author{Yuri Zhykin}
-\date{Mar 22, 2021}
+\date{May 5, 2022}
 
 \begin{document}
 
@@ -163,7 +163,7 @@
   \item Loops introduce complexity that is hard to analyse statically (i.e. by
     ``looking'' at the code without executing it).
   \item Ethereum network uses a Turing-complete language \textbf{Solidity},
-    which is arguably the reason behind some of the worst security incidents in
+    which is partly the reason behind some of the worst security incidents in
     the history of Ethereum.
   \end{itemize}
 \end{frame}
@@ -197,7 +197,7 @@
     either by an empty byte vector or by singleton $[0x80]$ vector.
   \item Any value that is not $False$ is considered $True$, i.e. any value other
     than $[]$ or $[0x80]$ on the top of the stack after script execution means
-    that the transaction is valid.
+    that the transaction is valid from the ownership perspective.
   \item Script execution can also fail, which is equivalent to immediately
     returning $False$ i.e. failing the transaction validation.
   \end{itemize}
@@ -417,7 +417,8 @@
   \item Generally, wallet is any item that contains information that can be used
     to construct an unlock-script for some \textit{UTXO}, so must be kept secret.
   \item Since most of transactions are \textit{standard}, typical Bitcoin wallet
-    is a software that can store cryptographic keys in a reasonably secure way.
+    only has to store cryptographic keys and usually is just software that can
+    store them in a reasonably secure way.
   \item When user wants to receive bitcoin, they generate a new address, which
     means that wallet software generates a new random private key $p_i$, computes a
     public key $P_i$ from it and computes a new P2PKH address $A_i$ as follows

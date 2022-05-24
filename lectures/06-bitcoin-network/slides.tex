@@ -54,7 +54,7 @@
 }
 
 \author{Yuri Zhykin}
-\date{Mar 29, 2021}
+\date{May 19, 2022}
 
 \begin{document}
 
@@ -96,19 +96,19 @@
     via the \textbf{gossip protocol} and validate them according to
     \textbf{consensus rules}.
   \item According to \textbf{bitnodes.io}, Bitcoin network has approximately
-    \textbf{10,000} \textit{listening} (i.e. publicly visible) nodes, but the
-    total number of \textbf{full} nodes (i.e. nodes that perform validation of
-    chain data) is around \textbf{100,000} nodes.
-  \item As of today, 49.5\% of all nodes run the most recent software (Bitcoin
-    Core v0.20.1 and v0.21.0).
+    \textbf{16,000} \textit{listening} (i.e. publicly visible) nodes, compared
+    to 10,000 a year ago.
+  \item The estimated total number of \textbf{full} nodes (i.e. nodes that
+    perform validation of chain data) is around \textbf{100,000} -
+    \textbf{150,000} nodes.
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Bitcoin Network 3/3}
   \begin{itemize}
-  \item As of today, 49.5\% of all nodes run the most recent software (Bitcoin
-    Core v0.20.1 and v0.21.0).
+  \item According to @LukeDashjr, 47.44\% of all nodes run the most recent
+    software (Bitcoin Core 23.0.0, 22.0.0, 0.21.0).
   \end{itemize}
   \begin{center}
     \includegraphics[width=0.7\textwidth]{nodes}
@@ -121,7 +121,7 @@
   \item \textbf{Gossip protocol} (a.k.a. \textbf{epidemic protocol}) is a
     process of peer-to-peer communication that is based on the way
     \textit{epidemics} spread - nodes receive information from one of their
-    neighbours and pass it on to all other neighbours.
+    neighbours and pass it on to as much of their neighbours as possible.
   \item \textbf{Bitcoin gossip protocol} is a gossip protocol for propagating
     new blocks and transactions as well as providing old blocks from storage to
     new peers on-demand.
@@ -136,7 +136,7 @@
   \frametitle{Bitcoin Network Node}
   \begin{itemize}
   \item \textbf{Bitcoin node} is a member of Bitcoin network, a piece of
-    software that executes the gossip protocol and validates the blocks and
+    software that executes the gossip protocol and validates blocks and
     transactions.
   \item A newly started Bitcoin node:
     \begin{itemize}
@@ -159,9 +159,10 @@
   \item Once the block is reconnected, \textbf{the chain that took more energy
       to build} (has the most cumulative \textbf{chainwork}) is chosen as the
     valid chain.
-  \item \textbf{Chainwork} is the total number of hashes that are expected to
+  \item \textbf{Chainwork} is the total number of hashes that are estimated to
     have been necessary to produce the current chain.
-  \item During IBD, \textbf{headers-first mode} makes this efficient.
+  \item \textbf{Headers-first IBD mode} makes IBD efficient by downloading the
+    whole chain as headers first, and only then asking for whole blocks.
   \end{itemize}
 \end{frame}
 
@@ -184,15 +185,14 @@
 \begin{frame}
   \frametitle{Mining}
   \begin{itemize}
-  \item \textbf{Miner nodes} are regular nodes that maintain the mempool and use
-    it to build the new blocks.
-  \item Miner node sorts mempool by transaction fee and selects ~2000
+  \item \textbf{Miner nodes} are regular nodes that use information in mempool
+    to build new blocks.
+  \item Miner node sorts mempool by transaction fee and selects approx. 2000
     transactions to build a new block.
-  \item Once a new block is build, miner node passes the block \textbf{template}
+  \item Once a new block \textbf{template} has been built, miner node passes it
     to the mining hardware that starts computing proof-of-work by brute-forcing
-    a $SHA256d(block)$ (i.e. $SHA256(SHA256(block))$) value that meets the
-    target value.
-  \item Once the block is mined (proof-of-work solution is found), the node
+    a $HASH256(block)$ value that meets the target value.
+  \item Once the block has been mined (proof-of-work solution found), the node
     broadcasts it to the network via the gossip protocol.
   \item If another miner mines a different block around the same time, network
     eventually resolves the conflict by selecting the chain with the most work
@@ -210,14 +210,14 @@
   \item Miner nodes see the new transaction and include it in the next block
     template if the transaction fee meets the necessary threshold.
   \item If transaction fee is lower than the threshold for the next block, it
-    remains in the mempool until all the higher-fee transactions are confirmed.
+    remains in the mempool until all higher-fee transactions are confirmed.
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Transaction Lifecycle 2/2}
   \begin{itemize}
-  \item While in the mempool, transaction be ``bumped'' higher in the mempool
+  \item While in the mempool, transaction can be ``bumped'' higher in the mempool
     using the following
     \begin{itemize}
     \item \textbf{replace-by-fee} (\textbf{RBF}),

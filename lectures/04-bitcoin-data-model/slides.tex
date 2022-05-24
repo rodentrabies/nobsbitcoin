@@ -43,14 +43,14 @@
 }
 
 \author{Yuri Zhykin}
-\date{Feb 22, 2021}
+\date{Apr 27, 2022}
 
 \begin{document}
 
 \frame{\titlepage}
 
 \begin{frame}
-  \frametitle{Bitcoin Data Model 1/2}
+  \frametitle{Bitcoin Data Model}
   \begin{itemize}
   \item \textbf{Bitcoin Block Chain} (or \textbf{Bitcoin Time Chain} is a
     distributed, highly-redundant database of transaction records that strongly
@@ -70,36 +70,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Bitcoin Data Model 2/2}
-  \begin{itemize}
-  \item All bitcoin in existence is represented via a set of \textbf{unspent
-      transaction outputs} (\textbf{UTXOs}) - a set of records of the form
-    $(amount, owner)$ that can be provably verified as not used in any
-    known transaction.
-  \item Every regular Bitcoin transaction consumes some existing UTXOs and
-    generates new UTXOs.
-  \item An entity ``owns'' bitcoin if the UTXO set contains outputs that have
-    that entity as the $owner$ part.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Transaction Output}
-  \begin{itemize}
-  \item \textbf{TxOutput}
-    \begin{itemize}
-    \item \textbf{amount}
-    \item \textbf{lock-script}
-    \end{itemize}
-  \item \textbf{Amount} - an amount of bitcoin currency units, called
-    ``satoshis'' represented as an integer (1 BTC = $10^8$ satoshis).
-  \item \textbf{Lock-script} - a cryptographic problem that must be solved in
-    order to spend this output, expressed as Bitcoin Script program.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Transaction 1/2}
+  \frametitle{Transaction}
   \begin{itemize}
   \item \textbf{Tx}
     \begin{itemize}
@@ -119,7 +90,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Transaction 2/2}
+  \frametitle{Transaction ID}
   \begin{itemize}
   \item \textbf{Transaction ID} is not included in the transaction data
     structure, since it can be computed from the binary representation of the
@@ -130,9 +101,22 @@
     \begin{minted}{Python}
       169e1e83e930853391bc6f35f605c6754cfead57cf8387639d3b4096c54f18f4
     \end{minted}
-  \item \textbf{Transaction fee} is a difference between the amounts in the
-    spent outputs and the amounts in the newly generated outputs:
-    $$TxFee = \sum_{i=1}^n InputAmount(txin_i) - \sum_{j=1}^m Amount(txout_j),$$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Transaction Output}
+  \begin{itemize}
+  \item \textbf{TxOutput}
+    \begin{itemize}
+    \item \textbf{amount}
+    \item \textbf{lock-script}
+    \end{itemize}
+  \item \textbf{Amount} - an amount of bitcoin currency units, called
+    ``satoshis'' represented as an integer (1 BTC = $10^8$ satoshis).
+  \item \textbf{Lock-script} - a computational (usually ``supply a valid
+    signature'') problem that must be solved in order to spend this output,
+    expressed as Bitcoin Script program.
   \end{itemize}
 \end{frame}
 
@@ -161,11 +145,35 @@
   \frametitle{Transaction Witness}
   \begin{itemize}
   \item \textbf{Witness} is an additional structure in the transaction that was
-    introduced as a protocol upgrade in 2017 as a first step in a long-term plan
-    to improve Bitcoin security, scalability and flexibility.
+    introduced as a protocol upgrade (called \textbf{SegWit} -
+    \textbf{Seg}regated \textbf{Wit}ness) in 2017 as a first step in a long-term
+    plan to improve Bitcoin security, scalability and flexibility.
   \item \textbf{Witness} allows to store complex \textit{unlock-scripts}
     (solutions) to the \textit{lock-scripts}, which accounts for a large part of
     the transaction size.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{UTXO (Unspent Transaction Output) Set}
+  \begin{itemize}
+  \item All bitcoin in existence is represented via a set of \textbf{unspent
+      transaction outputs} (\textbf{UTXOs}) - a set of records of the form
+    $(amount, owner)$ that can be provably verified as not used in any
+    known transaction.
+  \item Every regular Bitcoin transaction consumes some existing UTXOs and
+    generates new UTXOs.
+  \item An entity ``owns'' bitcoin if the UTXO set contains outputs that have
+    that entity as the $owner$ part.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Transaction Fee}
+  \begin{itemize}
+  \item \textbf{Transaction fee} is a difference between the amounts in the
+    spent outputs and the amounts in the newly generated outputs:
+    $$TxFee = \sum_{i=1}^n InputAmount(txin_i) - \sum_{j=1}^m Amount(txout_j),$$
   \end{itemize}
 \end{frame}
 
@@ -185,7 +193,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Block Header 1/3}
+  \frametitle{Block Header 1/4}
   \begin{itemize}
   \item \textbf{BlockHeader}
     \begin{itemize}
@@ -206,7 +214,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Block Header 2/3}
+  \frametitle{Block Header 2/4}
   \begin{itemize}
   \item \textbf{Proof-of-Work bits} is an encoded target value for the
     Proof-of-Work algorithm: the resulting PoW solution must be less than the
@@ -225,13 +233,25 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Block Header 3/3}
+  \frametitle{Block Header 3/4}
   \begin{itemize}
   \item \textbf{Transaction Merkle Tree Root} - a root of a Merkle Tree - a
     32-byte sequence that cryptographically includes all transactions in the
     block and ensures their sequence:
   \end{itemize}
   \includegraphics[width=\textwidth]{merkletree}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Block Header 4/4}
+  \begin{itemize}
+  \item Previous block hashes link blocks and transactions they contain into a
+    linear sequence chain via a cryptographic commitments.
+  \item Changing a single bit in a transaction completely changes the merkle
+    root, which changes block hash, which, in turn changes hash of the next
+    block and so on.
+  \end{itemize}
+  \includegraphics[width=\textwidth]{block-chain}
 \end{frame}
 
 \begin{frame}
