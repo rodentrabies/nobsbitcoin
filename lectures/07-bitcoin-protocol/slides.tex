@@ -54,7 +54,7 @@
 }
 
 \author{Yuri Zhykin}
-\date{Apr 5, 2021}
+\date{May 26, 2022}
 
 \begin{document}
 
@@ -84,9 +84,10 @@
       Bitcoin protocol;
     \item \textbf{miners} - entities that compute blocks and generate the
       \textit{computational security} of the network;
-    \item \textbf{SPV (Simplified Payment Verification) nodes} - nodes that are
-      only interested in particular transactions and their corresponding blocks;
-      usually mobile wallet software.
+    \item \textbf{``light'' nodes}, e.g. \textbf{SPV (Simplified Payment
+        Verification) nodes} - nodes that are only interested in particular
+      parts of Bitcoin protocol, e.g. transactions and their corresponding
+      blocks; usually mobile wallet software.
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -104,7 +105,7 @@
     \item heavily invested in the hardware and their only income is block
       rewards, so if the network is compromised, they lose all their income,
     \end{itemize}
-  \item \textbf{SPV nodes} only keep a chain of block headers (52 Mb of data)
+  \item \textbf{SPV nodes} only keep a chain of block headers (56 Mb of data)
     and validate only specific transactions.
   \end{itemize}
 \end{frame}
@@ -132,13 +133,14 @@
     \item 50 BTC (5,000,000,000 satoshis) in 2009-2012,
     \item 25 BTC (2,500,000,000 satoshis) in 2012-2016,
     \item 12.5 BTC (1,250,000,000 satoshis) in 2016-2020,
-    \item 6.25 BTC (625,000,000 satoshis) since 2021.
+    \item 6.25 BTC (625,000,000 satoshis) since 2020.
     \end{itemize}
   \item Bitcoin block reward forms a geometric progression
     $$a_n = ar^n \text{, } a = 50 \text{, } r = \frac{1}{2}$$
   \item The sum of this progression represents a total amount of Bitcoin that
     will ever exist:
-    $$210000 \times \sum_{n = 1}^{n: a_n \geq 1} a_n = 210000 \times \frac{a(1 - r^n)}{1 - r} \approx 21000000$$
+    $$210000 \times \sum_{n = 1}^{n: a_n \geq 1} a_n = 210000 \times \frac{a(1 -
+      r^n)}{1 - r} = 21000000$$
   \end{itemize}
 \end{frame}
 
@@ -150,7 +152,7 @@
     which is used in the lock-script) or intentionally destroyed (sent to an
     address with an unknown key, e.g.
     $$1BitcoinEaterAddressDontSendf59kuE$$
-  \item It is estimated that approximately 3-4 million bitcoins are lost
+  \item It is estimated that approximately 4-10 million bitcoins are lost
   \end{itemize}
   \includegraphics[width=\textwidth]{utxo-age}
 \end{frame}
@@ -194,7 +196,7 @@
     be conveniently measured by \textbf{hashrate} - \textbf{hashes computed per
       second} (H/s).
   \item Current total \textbf{hashrate} of the Bitcoin network is approximately
-    145 Eh/s ($145 \times 10^{18} = $ 145,000,000,000,000,000 H/s).
+    211 Eh/s ($211 \times 10^{18} = $ 211,000,000,000,000,000 H/s).
   \item As block rewards attract more miners, the total computing power of
     Bitcoin network increases.
   \end{itemize}

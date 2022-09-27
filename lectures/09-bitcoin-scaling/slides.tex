@@ -57,7 +57,7 @@
 }
 
 \author{Yuri Zhykin}
-\date{May 17, 2021}
+\date{Jun 16, 2022}
 
 \begin{document}
 
@@ -67,10 +67,10 @@
   \frametitle{Transaction Throughput}
   \begin{itemize}
   \item Block every 10 minutes (600 seconds).
-  \item Every block - 1 Mb.
+  \item Every block - 1-1.5 Mb.
   \item Average transaction size - 500 bytes.
   \item Throughput
-    $$T = \frac{1000 * 1000}{500 * 600} \approx 3 \text{tx/sec}$$
+    $$T = \frac{1.5 * 1024 * 1024}{500 * 600} \approx 5 \text{tx/sec}$$
   \item Visa throughput is approx. 1700 tx/second.
   \end{itemize}
 \end{frame}
@@ -138,30 +138,30 @@
   \item \textbf{P2WPKH} - pay-to-witness-public-key-hash
     \break
     \begin{tabular}{rl}
-      Witness: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{<signature> <pubkey>} \\
-      Unlock: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{;} \\
       Lock: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{0 <20-byte-key-hash>;} \\
+      Unlock: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{;} \\
+      Witness: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{<signature> <pubkey>} \\
     \end{tabular}
   \item \textbf{P2WSH} - pay-to-witness-script-hash
     \break
     \begin{tabular}{rl}
-      Witness: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{0 <signature1> <1 <pubkey1> <pubkey2> 2 CHECKMULTISIG>} \\
-      Unlock: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{;} \\
       Lock: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{0 <32-byte-key-hash>;} \\
+      Unlock: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{;} \\
+      Witness: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{0 <signature1> 1 <pubkey1> <pubkey2> 2 CHECKMULTISIG>} \\
     \end{tabular}
   \item \textbf{P2SH-P2WPKH} - P2WPKH nested in BIP16 P2SH
     \break
     \begin{tabular}{rl}
-      Witness: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{<signature> <pubkey>} \\
-      Unlock: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{<0 <20-byte-key-hash>>;} \\
       Lock: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{HASH160 <20-byte-script-hash> EQUAL;} \\
+      Unlock: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{<0 <20-byte-key-hash>>;} \\
+      Witness: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{<signature> <pubkey>} \\
     \end{tabular}
   \item \textbf{P2SH-P2WSH} - P2WSH nested in BIP16 P2SH
     \break
     \begin{tabular}{rl}
-      Witness: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{0 <signature1> <1 <pubkey1> <pubkey2> 2 CHECKMULTISIG>} \\
-      Unlock: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{<0 <32-byte-key-hash>>;} \\
       Lock: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{HASH160 <20-byte-hash> EQUAL;} \\
+      Unlock: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{<0 <32-byte-key-hash>>;} \\
+      Witness: &\tiny\mintinline[bgcolor=lightgray]{Lisp}{0 <signature1> 1 <pubkey1> <pubkey2> 2 CHECKMULTISIG>} \\
     \end{tabular}
   \end{itemize}
 \end{frame}
@@ -213,8 +213,9 @@
     \begin{center}
       \includegraphics[width=0.8\textwidth]{mast}
     \end{center}
-  \item Both \textbf{Schnorr signatures} and \textbf{MAST} are part of the
-    upcoming \textbf{Taproot} soft-fork (signalling started May 2, 2021).
+  \item Both \textbf{Schnorr signatures} and a variation of \textbf{MAST} are
+    part of the \textbf{Taproot} soft-fork that activated on the mainnet on
+    November 14, 2021.
   \end{itemize}
 \end{frame}
 
@@ -288,11 +289,11 @@
     \begin{itemize}
     \item $B$ generates a random value $R$ and computes a hash $H = hash(R)$ and
       provides $H$ to $A$;
-    \item $A$ and creates an HTLC (Hashed Timelock Contract) and updates it's
-      channel with $C_1$:
+    \item $A$ and creates an additional HTLC (Hash Timelock Contract) output and
+      updates it's channel with $C_1$:
       \begin{minted}{Lisp}
-  HASH160 <H> EQUAL
-  IF
+  IF 
+    HASH160 <H> EQUAL
     <B public key> CHECKSIG
   ELSE
     <locktime> CHECKLOCKTIMEVERIFY
@@ -310,11 +311,22 @@
 \begin{frame}
   \frametitle{Lightning Network Usage}
   \begin{itemize}
-  \item 20,478 nodes,
-  \item 45,774 channels,
-  \item 1,332.25 BTC (\$52,290,595),
+  \item 17,616 nodes (20,478 nodes in 2021),
+  \item 84,931 channels (45,774 channels in 2021),
+  \item 4,017.60 BTC = \$84,142,806 (1,332.25 BTC = \$52,290,595 in 2021),
   \item Ongoing research, improvements and new feature development,
   \item Games, online shops and other businesses.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Recommended Resources}
+  \begin{itemize}
+  \item \textbf{Bitcoin: A Work in Progress}
+    \begin{itemize}
+    \item book by Sjors Provoost, Bitcoin Core contributor
+    \item https://btcwip.com
+    \end{itemize}
   \end{itemize}
 \end{frame}
 

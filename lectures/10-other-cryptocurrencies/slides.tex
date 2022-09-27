@@ -57,7 +57,7 @@
 }
 
 \author{Yuri Zhykin}
-\date{May 30, 2021}
+\date{Jun 24, 2022}
 
 \begin{document}
 
@@ -71,7 +71,8 @@
   \item Various cryptocurrencies claim to ``solve'' one or several problems of
     Bitcoin protocol, such as:
     \begin{itemize}
-    \item weak/inflexible scripting system,
+    \item ``small'' blocks, ``long'' periods between blocks,
+    \item ``weak'' (inflexible) scripting system,
     \item mining centralization,
     \item energy consumption,
     \item \textbf{transaction privacy}.
@@ -99,13 +100,15 @@
     language by design.
   \item Bitcoin's approach:
     \begin{itemize}
-    \item simple language is easier to analyze for incorrect behavior
-    \item Turing-incompleteness prevents infinite loops and undefined behavior
+    \item simple language is easier to analyze for incorrect behavior;
+    \item Turing-incompleteness prevents infinite loops and undefined behavior;
     \item most ``smart contracts'' are simple enough to be expressed in Bitcoin
-      Script
+      Script;
     \item ``smart contracts'' that cannot be expressed in Bitcoin Script,
-      can/should be implemented as second-layer protocols
+      can/should be implemented as second-layer protocols.
     \end{itemize}
+  \item In fact, Bitcoin Script is considered by some to \textbf{too flexible}
+    (\textbf{Miniscript}, \textbf{Simplicity}).
   \end{itemize}
 \end{frame}
 
@@ -114,15 +117,19 @@
   \begin{itemize}
   \item Main types of smart contracts on Ethereum platform:
     \begin{itemize}
-    \item Fungible tokens similar to stocks (ICOs based on ERC-20 protocol,
-      2017).
-    \item Non-fungible collectible tokens like CryptoKitties (2017) or NFTs
-      (2020).
-    \item Digital identity management.
+    \item \textbf{fungible} tokens similar to stocks (ICOs based on ERC-20
+      protocol, 2017);
+    \item \textbf{non-fungible} (collectible) tokens like CryptoKitties (2017)
+      or NFTs (2020);
+    \item digital identity management.
     \end{itemize}
-  \item All of the above can be implemented on top of Bitcoin using the
-    \textbf{RGB protocol} within the Lightning Network, providing both
-    \textbf{contract flexibility} and \textbf{scalability}.
+  \item Both fungible and non-fungible tokens can be natively represented on
+    Bitcoin via \textbf{``coloring''} - UTXO is ``marked'' and considered a new
+    token - multiple projects around 2015.
+  \item All of the above can be implemented on top of Bitcoin using ideas like
+    \textbf{client side validation} (e.g. \textbf{RGB protocol} on the Lightning
+    Network), providing both \textbf{contract flexibility} and
+    \textbf{scalability}.
   \end{itemize}
 \end{frame}
 
@@ -132,12 +139,12 @@
   \item Bitcoin's Proof-of-Work system uses simple SHA-256d (double SHA-256)
     algorithm.
   \item SHA-256d can be easily implemented in specialized hardware
-    (\textbf{ASICs} - \textbf{Application specific integrated circuits}.
-  \item As of 2021, Bitcoin is mined solely on ASICs, as any generic purpose
+    (\textbf{ASICs} - \textbf{Application Specific Integrated Circuits}.
+  \item As of 2022, Bitcoin is mined solely on ASICs, as any generic purpose
     hardware is way to slow to be profitable.
   \item Bitcoin ASICs are mostly produced in China, which, combined with the low
-    electricity costs, resulted in an accumulation of significant amounts of
-    \textbf{hash-power} in mainland China.
+    electricity consts, resulted in an accumulation of significant amounts of
+    \textbf{hash-power} in mainland China in 2014-2017.
   \item Some people within cryptocurrency community consider ASIC resistance to
     be an important characteristic of the ``next generation'' cryptocurrency
     system.
@@ -149,13 +156,14 @@
   \begin{itemize}
   \item Bitcoin's point of view:
     \begin{itemize}
-    \item ASICs are slowly approaching theoretical efficiency limits, so there
-      is less incentive to install them close to the manufacturer (i.e. in
-      China),
+    \item ASICs are slowly approaching theoretical efficiency limits, so the
+      incentive to install them close to the manufacturer (i.e. in China) is
+      diminishing;
     \item a decentralization tendency has been observed in the last several
       years - more mining operations are being set up in other countries,
     \item that said, there are discussions of a potential change of the PoW
-      algorithm in a distant future.
+      algorithm in a distant future - this will most definitely require a
+      hard-fork.
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -166,18 +174,20 @@
   \item Lately, Bitcoin is being aggressively criticized by the mainstream
     media for its total energy consumption.
   \item Most of the claims on Bitcoin's energy consumption show little to no
-    understanding of both Bitcoin and electricity usage:
+    understanding of both Bitcoin and electricity usage (discussed in great
+    detail by Nic Carter on Twitter):
     \begin{itemize}
-    \item excess electricity cannot be stored,
+    \item excess electricity generated from renewables cannot be stored;
+    \item no evidence of Bitcoin mining operations causing electrical grid
+      outages in their respective areas, which indicates that only the excess
+      electricity is being consumed;
     \item miners are incentivized to put their equipment close to cheap excess
-      electricity sources,
-    \item a consumer consumes too much electricity iff it causes electrical grid
-      outages in the area where consumption occurs, otherwise it's just excess
-      electricity consumption,
-    \item value proposition of Bitcoin far outweighs the costs of electricity
-      consumed.
+      electricity sources;
+    \item Bitcoin mining will optimize inefficient renewable energy production
+      and incentivize \textbf{nuclear energy}.
     \end{itemize}
-  \item This has been discussed in great details by Nic Carter on Twitter.
+  \item \textbf{Does Bitcoin's value proposition outweigh the costs of
+      consumed electricity?}
   \end{itemize}
 \end{frame}
 
@@ -204,12 +214,12 @@
     created by a coinbase transaction, the whole transaction history can be
     followed by simply looking at the chain data.
   \item Bitcoin addresses are \textbf{pseudonymous}: outputs to the same address
-    can be easily tied together.
+    can be easily tied together, \textbf{but one should not reuse addresses}.
   \item As a result, Bitcoin chain is susceptible to \textbf{chain analysis}
     that in some cases allows to establish the sender and the recipient of the
     bitcoin (the amount is publicly visible directly).
-  \item This makes Bitcoin hard to use as a currency for daily payments, where
-    transaction privacy is essential (salary, medication bills, etc).
+  \item This might complicate Bitcoin's use as a currency for daily payments,
+    where transaction privacy is essential (salary, medication bills, etc).
   \end{itemize}
 \end{frame}
 
@@ -217,9 +227,14 @@
   \frametitle{Transaction Privacy 2/2}
   \begin{itemize}
   \item Lightning Network significantly improves transaction privacy by moving
-    most of the transactions off chain.
-  \item Channel open and channel close transactions are still visible on chain.
+    day-to-day transactions off chain.
+  \item Channel open and channel close transactions are still visible on chain -
+    \textbf{taproot} partially fixes this and is a first step towards a general
+    solution to the problem.
   \item Proposals to implement privacy features on Bitcoin \textbf{sidechains}.
+  \item Proposals to implement privacy features directly on Bitcoin mainnet -
+    unlikely to happen in the near future, but will probably be implemented
+    eventually in one way or another.
   \end{itemize}
 \end{frame}
 
@@ -244,11 +259,12 @@
     ``DAO hack'' - loss of a large amount of funds in 2016 that caused
     \textbf{the Ethereum governing body to revert a transaction via a hard
       fork}.
-  \item An investigation in 2019 indicated that 60\% of Ethereum nodes were
-    running in the cloud on centralized platforms like AWS.
+  \item An investigation in 2019 \textbf{indicated} that 60\% of Ethereum nodes
+    were running in the cloud on centralized platforms like AWS (claim by AWS
+    confirms that 25\% of Ethereum infrastructure runs there in 2022).
   \item Ethereum's scalability problem is even worse than that of Bitcoin: full
-    archive is approximately 7.3 Tb of data, while the regular pruned node size
-    is 300 Gb.
+    node is 700 Gb, archive node is approximately 10 Tb of data (Bitcoin
+    blockchain for comparison is 380 Gb, and it's twice as old).
   \item Ethereum network is determined to move to a Proof-of-Stake system.
   \end{itemize}
 \end{frame}
@@ -273,39 +289,51 @@
 \begin{frame}
   \frametitle{Case Study: Monero 2/2}
   \begin{itemize}
-  \item Based on the CryptoNote protocol described by a pseudonymous entity
-    \textbf{Nicolas van Saberhagen}.
-  \item Created by a pseudonymous individual \textbf{thankful\_for\_today} who
-    forked the codebase of CryptoNote-based coin Bytecoin and launched the
-    network.
-  \item Has a very simple transaction structure with no scripting system.
   \item The privacy of Monero is achieved by concealing the following
     information:
     \begin{itemize}
     \item the sender of the money via the \textbf{ring signatures},
     \item the receiver of the money via the \textbf{stealth addresses},
-    \item the amount sent via the Confidential Transactions system that encrypts
-      the amounts in transaction but allows to check that the amount spend is
-      greater than the amount received.
+    \item the amount sent via the \textbf{Confidential Transactions} system that
+      encrypts the amounts in transaction but allows to check that the amount
+      spend is greater than the amount received.
     \end{itemize}
+  \item Monero is very low-use blockchain system and is therefore dangerous for
+    serious use-cases.
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Conclusions}
+  \frametitle{Founder Influence}
   \begin{itemize}
-  \item Bitcoin and Monero are the only cryptocurrencies whose creators are no
-    longer engaging with the community.
+  \item Bitcoin and Monero are arguable the only interesting cryptocurrencies
+    whose creators are no longer engaging with the community and have no
+    influence over it.
   \item Satoshi Nakamoto never appeared online since 2011.
   \item Some people believe Satoshi disappeared to prevent any entity, including
     themselves, from manipulating the community using their name, identity,
     sentimental role, or the amount of bitcoin they presumably own.
+  \item Satoshi's disappearance is considered a ``gift'' to Bitcoin ecosystem,
+    as he/she removed himself/herself from the discussion to avoid undermining
+    the decentralization of the system via \textbf{founder influence} in its
+    formative years.
+  \item Founder (Foundation) influence persuaded Ethereum community to accept a
+    hard-fork in 2016 and lose credibility as a decentralized finance system.
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Conclusions}
+  \begin{itemize}
   \item Bitcoin community is very conservative regarding the protocol changes,
     and network safety and stability are considered the most important goals.
   \item Features that Bitcoin lacks can often be implemented as layer-2
     solutions.
   \item Transaction privacy is one of the first priority goals (after safety and
     stability).
+  \item \textbf{Is store of value Bitcoin's niche or will it become a single
+      global payment system as well?}
   \item \textbf{Do we need other cryptocurrencies?}
   \end{itemize}
 \end{frame}

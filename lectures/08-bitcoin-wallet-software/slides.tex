@@ -54,7 +54,7 @@
 }
 
 \author{Yuri Zhykin}
-\date{Apr 19, 2021}
+\date{Jun 9, 2022}
 
 \begin{document}
 
@@ -65,10 +65,10 @@
   \begin{itemize}
   \item All bitcoin in existence is represented by a \textbf{UTXO set} - a set
     of all unspent transaction outputs.
-  \item Every ``coin'' consists of the amount of \textbf{satoshis} and the
-    corresponding lock script.
-  \item In order to verify the received transaction, a Bitcoin user checks that
-    transaction is correctly constructed and if the outputs used by the
+  \item Every ``coin'' (\textbf{UTXO}) consists of the amount of
+    \textbf{satoshis} and the corresponding lock script.
+  \item In order to verify the received transaction, a Bitcoin user has to check
+    that transaction is correctly constructed and if the outputs used by the
     transaction are included in the \textbf{UTXO set}.
   \item Whole Bitcoin protocol works to ensure the \textbf{consistency} of of
     the \textbf{UTXO set}.
@@ -87,7 +87,6 @@
     owns.
   \item Any software, hardware or object that stores data needed to construct
     unlock scripts is technically a \textbf{Bitcoin wallet}.
-    
   \end{itemize}
 \end{frame}
 
@@ -278,7 +277,6 @@
       &${\scriptstyle K_i = (I[0:32])G + K_{par} = (I[0:32] + k_{par})G = k_iG}$ \\
       &${\scriptstyle c_i = I[32:64]}$ \\
     \end{tabular}
-
   \end{itemize}
 \end{frame}
 
