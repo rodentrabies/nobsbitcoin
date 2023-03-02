@@ -35,77 +35,77 @@
 }
 
 \author{Yuri Zhykin}
-\date{Feb 8, 2022}
+\date{Feb 20, 2023}
 
 \begin{document}
 
 \frame{\titlepage}
 
-\begin{frame}
-  \frametitle{Contacts}
-  \begin{itemize}
-  \item @rodentrabies on Telegram
-  \item https://github.com/rodentrabies
-  \end{itemize}
-\end{frame}
+% \begin{frame}
+%   \frametitle{Contacts}
+%   \begin{itemize}
+%   \item @rodentrabies on Telegram
+%   \item https://github.com/rodentrabies
+%   \end{itemize}
+% \end{frame}
 
-\begin{frame}
-  \frametitle{Course structure 1/2}
-  \begin{itemize}
-  \item History and economics of Bitcoin
-    \begin{itemize}
-    \item Economic concepts and properties of money
-    \item Computer cryptography and cypherpunk movement
-    \item Bitcoin invention and innovation
-    \end{itemize}
-  \item Crypto means Cryptography
-    \begin{itemize}
-    \item Cryptography basics
-    \item Hash functions
-    \item Public key cryptography
-    \item Elliptic curves
-    \item Cryptographic signatures
-    \end{itemize}
-  \item Bitcoin chain data model
-    \begin{itemize}
-    \item Transactions
-    \item Inputs and outputs
-    \item Blocks
-    \item Chain of blocks and Proof of Work
-    \end{itemize}
-  \item[] ...
-  \end{itemize}
-\end{frame}
+% \begin{frame}
+%   \frametitle{Course structure 1/2}
+%   \begin{itemize}
+%   \item History and economics of Bitcoin
+%     \begin{itemize}
+%     \item Economic concepts and properties of money
+%     \item Computer cryptography and cypherpunk movement
+%     \item Bitcoin invention and innovation
+%     \end{itemize}
+%   \item Crypto means Cryptography
+%     \begin{itemize}
+%     \item Cryptography basics
+%     \item Hash functions
+%     \item Public key cryptography
+%     \item Elliptic curves
+%     \item Cryptographic signatures
+%     \end{itemize}
+%   \item Bitcoin chain data model
+%     \begin{itemize}
+%     \item Transactions
+%     \item Inputs and outputs
+%     \item Blocks
+%     \item Chain of blocks and Proof of Work
+%     \end{itemize}
+%   \item[] ...
+%   \end{itemize}
+% \end{frame}
 
-\begin{frame}
-  \frametitle{Course structure 2/2}
-  \begin{itemize}
-  \item[] ...
-  \item Deep dive into Bitcoin transactions
-    \begin{itemize}
-    \item Transaction scripts
-    \item Transaction validation
-    \item Bitcoin wallets
-    \end{itemize}
-  \item Bitcoin network
-    \begin{itemize}
-    \item Peer-to-peer network architecture
-    \item Mempool and mining
-    \item Network parameters and dynamics
-    \end{itemize}
-  \item Second layer protocols
-    \begin{itemize}
-    \item Scalability problem
-    \item Payment channel networks
-    \item Non-fungible tokens
-    \end{itemize}
-  \item Other cryptocurrency systems
-    \begin{itemize}
-    \item Ethereum: maximum flexibility
-    \item Monero: maximum privacy
-    \end{itemize}
-  \end{itemize}
-\end{frame}
+% \begin{frame}
+%   \frametitle{Course structure 2/2}
+%   \begin{itemize}
+%   \item[] ...
+%   \item Deep dive into Bitcoin transactions
+%     \begin{itemize}
+%     \item Transaction scripts
+%     \item Transaction validation
+%     \item Bitcoin wallets
+%     \end{itemize}
+%   \item Bitcoin network
+%     \begin{itemize}
+%     \item Peer-to-peer network architecture
+%     \item Mempool and mining
+%     \item Network parameters and dynamics
+%     \end{itemize}
+%   \item Second layer protocols
+%     \begin{itemize}
+%     \item Scalability problem
+%     \item Payment channel networks
+%     \item Non-fungible tokens
+%     \end{itemize}
+%   \item Other cryptocurrency systems
+%     \begin{itemize}
+%     \item Ethereum: maximum flexibility
+%     \item Monero: maximum privacy
+%     \end{itemize}
+%   \end{itemize}
+% \end{frame}
 
 \begin{frame}
   \frametitle{Economic concepts and properties of money}
@@ -135,23 +135,19 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Cryptography and electronic money}
+  \frametitle{Centralized electronic money 1/2}
   \begin{itemize}
-  \item \textbf{Cryptography} is a method of protecting information and
-    communications through the use of secrets that prevent third parties from
-    accessing it
-  \item Traditional electronic money - centrally managed ledgers, databases and
-    communication encrypted
-  \item Is it possible to eliminate central management?
-  \item \textbf{Byzantine Generals Problem} - how can three generals agree on when
-    to attack if they don't trust each other?
-  \item \textbf{How can multiple parties come to a consensus without having to
-      trust each other?}
+  \item Traditional electronic money - centrally managed ledgers (bank
+    databases)
+  \item Transactions within a single bank - changes to the client's balance in
+    the bank database
+  \item Transactions between banks - communication between banks that aggregate
+    payments between clients of different banks (e.g. SWIFT)
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Centralized monetary system}
+  \frametitle{Centralized electronic money 2/2}
   \begin{itemize}
   \item In most cases government is the central entity controlling monetary
     supply
@@ -160,6 +156,17 @@
     from \textbf{all} its people without their consent
   \item Exclusive control over money is the ultimate tool of controlling people
     for totalitarian regimes
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Decentralized electronic money}
+  \begin{itemize}
+  \item Is it possible to eliminate central management?
+  \item \textbf{Byzantine Generals Problem} - how can three generals agree on when
+    to attack if they don't trust each other?
+  \item \textbf{How can multiple parties come to a consensus without having to
+      trust each other?}
   \end{itemize}
 \end{frame}
 
