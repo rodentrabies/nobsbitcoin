@@ -29,6 +29,15 @@ Lecture slides (English):
 Слайди лекцій (українською):
   - [[file:lectures/01-economics-and-history/slides-ukrainian.pdf][Лекція 01 - Економіка та історія]]
     # [[file:lectures/01-economics-and-history/slides-ukrainian.tex][LaTeX source]]
+  - [[file:lectures/02-cryptography-basics-1/slides-ukrainian.pdf][Лекція 02 - Основи криптографії 1/2]]
+    # [[file:lectures/02-cryptography-basics-1/slides-ukrainian.tex][LaTeX source]]
+  - [[file:lectures/03-cryptography-basics-2/slides-ukrainian.pdf][Лекція 03 - Основи криптографії 2/2]]
+    # [[file:lectures/03-cryptography-basics-2/slides-ukrainian.tex][LaTeX source]]
+  - [[file:lectures/04-bitcoin-data-model/slides-ukrainian.pdf][Лекція 04 - Модель даних Біткоїна]]
+    # [[file:lectures/04-bitcoin-data-model/slides-ukrainian.tex][LaTeX source]]
+  - [[file:lectures/05-bitcoin-transactions/slides-ukrainian.pdf][Лекція 05 - Біткоїн-транзакції]]
+    # [[file:lectures/05-bitcoin-transactions/slides-ukrainian.tex][LaTeX source]]
+
 
 
 ** Practice
