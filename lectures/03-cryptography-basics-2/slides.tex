@@ -43,7 +43,7 @@
 }
 
 \author{Yuri Zhykin}
-\date{Apr 19, 2022}
+\date{Mar 2, 2023}
 
 \begin{document}
 
@@ -52,8 +52,8 @@
 \begin{frame}
   \frametitle{Public-key Cryptography Recap}
   \begin{itemize}
-  \item \textbf{Public-key cryptography} or \textbf{asymmetric cryptography} is
-    a cryptographic system that uses \textbf{pairs} of keys:
+  \item \textbf{Public-key cryptography} or \textbf{asymmetric cryptography}
+    involves cryptographic systems that use \textbf{pairs} of keys:
     \begin{itemize}
     \item \textbf{private keys}, which must be kept secret and only known to the
       owner,
@@ -66,6 +66,36 @@
     in 1970s.
   \item Arguably the only reason why it's possible to do anything useful over
     the Internet.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Diffie-Hellman Key Exchange Protocol 1/2}
+  \begin{itemize}
+  \item Diffie-Hellman-Merkle key exchange algorithm can be intuitively
+    explained with the following example:
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.35\textwidth]{dh}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Diffie-Hellman Key Exchange Protocol 2/2}
+  \begin{itemize}
+  \item DH protocol implementations are based on the following observation
+    written additively
+    \begin{align*}
+      A &= aG (= G + G + ... + G) \\
+      B &= bG \\
+      bA &= b(aG) = (ba)G = (ab)G = a(bG) = aB
+    \end{align*}
+    or multiplicatively
+    \begin{align*}
+      A &= G^a (= G * G * ... * G) \\
+      B &= G^b \\
+      A^b &= (G^a)^b = G^{(ab)} = G^{(ba)} = (G^b)^a = B^a
+    \end{align*}
   \end{itemize}
 \end{frame}
 
@@ -143,37 +173,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Diffie-Hellman Key Exchange Protocol 1/3}
-  \begin{itemize}
-  \item Diffie-Hellman-Merkle key exchange algorithm can be intuitively
-    explained with the following example:
-  \end{itemize}
-  \begin{center}
-    \includegraphics[width=0.35\textwidth]{dh}
-  \end{center}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Diffie-Hellman Key Exchange Protocol 2/3}
-  \begin{itemize}
-  \item DH protocol implementations are based on the following observation
-    written additively
-    \begin{align*}
-      A &= aG (= G + G + ... + G) \\
-      B &= bG \\
-      bA &= b(aG) = (ba)G = (ab)G = a(bG) = aB
-    \end{align*}
-    or multiplicatively
-    \begin{align*}
-      A &= G^a (= G * G * ... * G) \\
-      B &= G^b \\
-      A^b &= (G^a)^b = G^{(ab)} = G^{(ba)} = (G^b)^a = B^a
-    \end{align*}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Diffie-Hellman Key Exchange Protocol 3/3}
+  \frametitle{Simple Diffie-Hellman Key Exchange Implementation}
   \begin{itemize}
   \item Simplest implementation of the DH protocol (as described in the paper)
     uses the \textbf{multiplicative group of integers modulo $p$}, where
@@ -192,6 +192,52 @@
       $$s = A^b \pmod{p} = 4^3 \pmod{23} = 18$$
     \end{itemize}
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Elliptic Curves 1/3}
+  \begin{itemize}
+  \item \textbf{Elliptic curves} are algebraic structures described by equations
+    of the form:
+    $$y^2 = x^3 + ax + b$$
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.55\textwidth]{ec}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Elliptic Curves 2/3}
+  \begin{itemize}
+  \item Elliptic curves are defined over a \textbf{field} $K$ and describes
+    points in $K \times K$.
+  \item \textbf{Group law}:
+    \begin{itemize}
+    \item If $P$ and $Q$ are two points on the curve, then we can uniquely
+      describe a third point, $P + Q$, in the following way. First, draw the
+      line that intersects $P$ and $Q$. This will generally intersect the curve
+      at a third point, $R$. We then take $P + Q$ to be $-R$, the point opposite
+      $R$.
+    \end{itemize}
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{ec_group}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Elliptic Curves 3/3}
+  \begin{itemize}
+  \item \textbf{Elliptic curves defined over finite fields of prime order} form
+    groups that are well suited for cryptographic purposes because of
+    significantly \textbf{more complex group structure}, which allows for much
+    \textbf{smaller keys}.
+  \item An example of an elliptic curve defined over finite filed ($y^2 = x
+    ^3 - x$ over $F_{71}$):
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{ec_finite_field_group}
+  \end{center}
 \end{frame}
 
 \begin{frame}
@@ -255,52 +301,6 @@
                   &= r
     \end{align*}
   \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Elliptic Curves 1/3}
-  \begin{itemize}
-  \item \textbf{Elliptic curves} are algebraic structures described by equations
-    of the form:
-    $$y^2 = x^3 + ax + b$$
-  \end{itemize}
-  \begin{center}
-    \includegraphics[width=0.55\textwidth]{ec}
-  \end{center}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Elliptic Curves 2/3}
-  \begin{itemize}
-  \item Elliptic curves are defined over a \textbf{field} $K$ and describes
-    points in $K \times K$.
-  \item \textbf{Group law}:
-    \begin{itemize}
-    \item If $P$ and $Q$ are two points on the curve, then we can uniquely
-      describe a third point, $P + Q$, in the following way. First, draw the
-      line that intersects $P$ and $Q$. This will generally intersect the cubic
-      at a third point, $R$. We then take $P + Q$ to be $-R$, the point opposite
-      $R$.
-    \end{itemize}
-  \end{itemize}
-  \begin{center}
-    \includegraphics[width=0.9\textwidth]{ec_group}
-  \end{center}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Elliptic Curves 3/3}
-  \begin{itemize}
-  \item \textbf{Elliptic curves defined over finite fields of prime order} form
-    groups that are well suited for cryptographic purposes because of
-    significantly \textbf{more complex group structure}, which allows for much
-    \textbf{smaller keys}.
-  \item An example of an elliptic curve defined over finite filed ($y^2 = x
-    ^3 - x$ over $F_{71}$):
-  \end{itemize}
-  \begin{center}
-    \includegraphics[width=0.7\textwidth]{ec_finite_field_group}
-  \end{center}
 \end{frame}
 
 \begin{frame}
