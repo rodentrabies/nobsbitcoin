@@ -262,45 +262,135 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{DSA 1/2}
+  \frametitle{DSA 1/4}
   \begin{itemize}
-  \item Alice and Bob must agree on the group parameters $(GROUP, G, n)$, where
-    $GROUP$ is a group of prime order $n$ with generator $G$.
-  \item Alice creates a key pair, consisting of a private key integer $a$,
-    randomly selected in the interval $[1, n - 1]$ and a public key group
-    element $A = aG$.
+  \item Alice and Bob must agree on the group parameters $(p, q, Z_p*, G)$, where
+    $p$ is prime, $q$ is a smaller prime that divides $p-1$, $Z_p*$ is the multiplicative group of integers modulo $p$,
+    $G$ is a generator of a subgroup of $Z_p*$ of order $q$.
+  \item Alice creates a key pair, consisting of a private key integer $x$,
+    randomly selected from $[1, q - 1]$ and a public key group
+    element $y = G^x \pmod{p}$.
   \item To sign a message $m$, Alice
     \begin{itemize}
     \item calculates $e = HASH(m)$,
     \item selects a \textbf{cryptographically secure random integer}
-      $k \in [1, n - 1]$,
-    \item calculates the group element $(x_1, y_1) = kG$,
-    \item calculates $r = x_1 \pmod{n}$,
-    \item calculates $s = k^{-1}(e + ra) \pmod{n}$.
+      $k \in [1, q - 1]$ such that $k$ and $q$ are relatively prime,
+    \item calculates $r = G^k \pmod{p}$,
+    \item calculates $s = k^{-1}(e + x*r) \pmod{q}$.
     \end{itemize}
   \item Signature is a pair $(r, s)$; $(r, -s \pmod{n})$ is \textbf{also valid}.
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{DSA 2/2}
+  \frametitle{DSA 2/4}
   \begin{itemize}
   \item To verify the signature $(r, s)$, Bob
     \begin{itemize}
-    \item verifies that $r$ and $s$ are integers in $[1, n - 1]$, otherwise the
+    \item receives Alice's public key $y$, the message $m$ and the signature $(r, s)$
+    \item verifies that $r$ and $s$ are integers in $[1, q - 1]$, otherwise the
       signature is invalid,
+    \item calculates $w = s^{-1} \pmod{q}$,
     \item calculates $e = HASH(m)$,
-    \item calculates $u_1 = es^{-1} \pmod{n}$ and $u_2 = rs^{-1} \pmod{n}$,
-    \item calculates the group element $(x_1, y_1) = u_1G + u_2A$.
+    \item calculates $u_1 = ew$ and $u_2 = rw \pmod{q}$,
+    \item calculates the group element $v = G^{u_1} * y^{u_2} \pmod{p} \pmod{q}$.
     \end{itemize}
-  \item The signature is valid if $r \equiv x_1 \pmod{n}$ and invalid otherwise:
+  \item The signature is valid if $r \equiv v$ and invalid otherwise:
     \begin{align*}
-      u_1G + u_2A &= u_1G + u_2aG = (u_1 + u_2a)G \\
-                  &= (es^{-1} + rs^{-1}a)G = (e + ra)s^{-1}G \\
-                  &= (e + ra)(a + ra)^{-1}kG = kG \\
+      G^{u_1} * y^{u_2} &= G^{u_1} * G^{u_2x} = G^{u_1 + u_2x} \\
+                  &= G^{es^{-1} + rs^{-1}x} = G^{(e + rx)s^{-1}} \\
+                  &= G^{(e + rx)(e + rx)^{-1}k} = G^k \\
                   &= r
     \end{align*}
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{DSA 3/4}
+  \begin{itemize}
+  \item To illustrate the process using small numbers:
+  \item Global public key elements:
+    \begin{itemize}
+    \item Choose a prime $p = 23$ and a prime $q = 11$ that divides $p-1$.
+    \item Choose an integer $h = 4 (1 < h < p-1)$, then calculate $G = h^{(p-1)/q} \pmod{p} = 4^{(23-1)/11} \pmod{23} = 8$.
+    \end{itemize}
+  \item Alice's key pair:
+    \begin{itemize}
+    \item Private key $x$ is a randomly selected integer from $[1, q-1]$, let's say $x = 6$.
+    \item Public key $y$ is $G^x \pmod{p} = 8^6 \pmod{23} = 2$.
+    \end{itemize}
+  \item Message signing:
+    \begin{itemize}
+    \item Select a random integer $k$ from $[1, q-1]$, let's say $k = 9$.
+    \item Computes $r = g^k \pmod{p} \pmod{q} = 8^9 \pmod{23} \pmod{11} = 6 \pmod{11} = 6$.
+    \item Say $e = HASH(m) = 8$. Compute $s = k^{-1} * (e + x*r) \pmod{q} = 9^{-1} * (8 + 6*6) \pmod{11} = 5 * (8 + 36) \pmod{11} = 8$.
+    \item The signature is $(r, s) = (6, 8)$.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{DSA 4/4}
+  \begin{itemize}
+  \item Verification (Bob's step):
+    \begin{itemize}
+    \item Bob receives Alice's public key $y = 2$, the message $m = "Hello"$, and the signature $(r, s) = (6, 8)$.
+    \item Bob calculates:
+      \begin{itemize}
+      \item $w = s^{-1} \pmod{q} = 8^{-1} \pmod{11} = 7$ (because $8*7 \pmod{11} = 1$).
+      \item $u_1 = (HASH(m) * w) \pmod{q} = (8 * 7) \pmod{11} = 1$.
+      \item $u_2 = (r * w) \pmod{q} = (6 * 7) \pmod{11} = 9$
+      \end{itemize}
+    \item Finally, Bob checks if $r = (G^{u_1} * y^{u_2} \pmod{p}) \pmod{q} = (8^1 * 2^9 \pmod{23}) \pmod{11} = 6$.
+    \end{itemize}
+  \item Since r matches, Bob can verify that the signature is from Alice.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Elliptic Curves 1/3}
+  \begin{itemize}
+  \item \textbf{Elliptic curves} are algebraic structures described by equations
+    of the form:
+    $$y^2 = x^3 + ax + b$$
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.55\textwidth]{ec}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Elliptic Curves 2/3}
+  \begin{itemize}
+  \item Elliptic curves are defined over a \textbf{field} $K$ and describes
+    points in $K \times K$.
+  \item \textbf{Group law}:
+    \begin{itemize}
+    \item If $P$ and $Q$ are two points on the curve, then we can uniquely
+      describe a third point, $P + Q$, in the following way. First, draw the
+      line that intersects $P$ and $Q$. This will generally intersect the cubic
+      at a third point, $R$. We then take $P + Q$ to be $-R$, the point opposite
+      $R$.
+    \end{itemize}
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{ec_group}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Elliptic Curves 3/3}
+  \begin{itemize}
+  \item \textbf{Elliptic curves defined over finite fields of prime order} form
+    groups that are well suited for cryptographic purposes because of
+    significantly \textbf{more complex group structure}, which allows for much
+    \textbf{smaller keys}.
+  \item An example of an elliptic curve defined over finite field ($y^2 = x
+    ^3 - x$ over $F_{71}$):
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{ec_finite_field_group}
+  \end{center}
 \end{frame}
 
 \begin{frame}
@@ -309,6 +399,7 @@
   \item \textbf{Elliptic Curve Digital Signature Algorithm} (\textbf{ECDSA}) is
     a variant of the \textbf{Digital Signature Algorithm} (\textbf{DSA}) which
     uses \textbf{elliptic curve cryptography}.
+  \item The ECDSA is a variant of the DSA that operates in the group of points on an elliptic curve over a finite field, rather than the multiplicative group of integers modulo a prime.
   \item With \textbf{ECC}, the bit size of the private key believed to be needed
     for ECDSA is about \textbf{twice the size} of the security level, i.e. for
     128 bits of security, the key size of 256 bits is sufficient.

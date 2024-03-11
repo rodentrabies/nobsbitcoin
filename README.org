@@ -1,4 +1,4 @@
-* noBSBitcoin
+* nobsbitcoin
 
 This is a root directory for the course materials for the "Bitcoin and
 Cryptocurrency Technologies" course.
