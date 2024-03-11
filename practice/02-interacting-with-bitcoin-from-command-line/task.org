@@ -1,10 +1,173 @@
 * Task 2 - Interacting with Bitcoin Network via CLI
 
 ** Introduction
-TODO.
+Participants in the Bitcoin network are divided into *full nodes* and
+*light nodes* (or *light clients*). *Full nodes* are network nodes
+that have a complete copy of the block chain, participate in block and
+transaction propagation, and perform full validation of blocks and
+transactions. An example of a *full node* is the Bitcoin Core server,
+the installation of which was described in [[file:~/Documents/nobsbitcoin/practice/01-running-your-own-bitcoin-node/task.org][task 1]]. *Light nodes*
+implement only a subset of the functions of full nodes and are used to
+perform specific types of interactions with the network. The most
+common type of light nodes is *Bitcoin wallet software*. A full
+Bitcoin node may have a built-in wallet, so with Bitcoin transactions
+can be manipulated via a full node, but in most cases, a full node is
+not convenient to be used as a Bitcoin wallet, so most software
+wallets are implemented as light clients.
+
+A *software wallet* is software that manages keys for standard unspent
+transaction outputs (UTXOs). The functions of a simple software wallet
+include:
+  - secure storage of cryptographic keys;
+  - receiving funds:
+    - interaction with the network to receive information about all
+      new blocks and transactions;
+    - searching new blocks for transactions that are related to the
+      keys stored by the wallet (hashes of keys in lock scripts in
+      outputs or signatures made by these keys in unlock scripts in
+      transaction inputs).
+  - sending funds:
+    - creating new transactions;
+    - signing new transactions with keys corresponding to the outputs
+      destroyed by these transactions;
+    - interaction with the network to send new signed transaction.
+
+Most lightweight Bitcoin wallets interact with the network not through
+*peer-to-peer protocol*, but via *RPC*: instead of direct interaction
+with a random set of nodes in the network, the wallet connects to a
+specific node similarly to how the ~bitcoin-cli~ tool operates, and
+executes RPC API commands. This approach has a significant drawback if
+the node your wallet connects to does not belong to you (typically,
+existing wallets connect to nodes provided by wallet developers). The
+drawback is that such a node can *collect information about user
+transactions for further analysis*, so for critically important
+transactions, it is advisable to use software wallets that allow the
+user to *connect to their own full Bitcoin node*.
+
+In this lab, we will interact with the Bitcoin network using the
+software wallet built into the Bitcoin node, as well as using a
+separate Bitcoin wallet.
 
 ** Instructions
-TODO.
+To do this lab task, it is recommended to synchronize a Bitcoin node
+with the testnet network, as setting up a separate software wallet to
+interact with the regtest network can be quite challenging.
+
+To start the Bitcoin node in testnet mode, execute the command:
+
+#+BEGIN_SRC sh
+  bitcoind -testnet -daemon
+#+END_SRC
+
+Synchronization takes about 2 hours, but it depends on the device's
+hardware, so it is recommended to leave synchronization overnight. The
+testnet blockchain occupies about 32 GB. You can monitor the
+synchronization process of the daemonized node using the command:
+
+#+BEGIN_SRC sh
+  tail -f ~/.bitcoin/testnet3/debug.log
+#+END_SRC
+
+Next, you need to choose a separate software wallet. To do this, you
+can use the wallet selection dialog on the [[https://bitcoin.org][bitcoin.org]] website, but
+please note that one of the search parameters should be support for
+the testnet network.
+
+After installing the chosen wallet, when you first start it, you will
+need to initialize your wallet. In most cases, the software wallet
+will prompt you to write down 12 or 24 words, which are a mnemonic
+(i.e., "easy to remember", although this is an exaggeration)
+representation of the *root key* of a new *hierarchical deterministic
+wallet* (*HD wallet*). All keys that your wallet will generate when
+generating new addresses will be deterministically calculated from the
+root key, so a backup is only necessary for the root key. You can read
+more about HD wallets in detail [[https://learnmeabitcoin.com/technical/mnemonic][here]].
+
+Example of mnemonic representation of the root key of an HD wallet:
+
+
+#+BEGIN_SRC 
+  happy gauge biology view proof over
+  inside assume actress way today true
+  unlock truck feature pitch reunion middle
+  spoon swift sing oak loud buffalo
+#+END_SRC
+
+Please note that these words provide *full access* to your wallet and
+all funds that ever enter it, so when working with the real Bitcoin
+network (and therefore real bitcoin), it is essential to *keep these
+words in the as secure as possible*.
+
+The next step is to obtain a small amount of testnet bitcoins. Unlike
+the regtest network, the testnet network is a fully functioning
+network with hundreds of active nodes, so generating a new block (and
+receiving a reward for it) independently can be challenging. Since
+testnet bitcoins have no value, some resources, such as the [[https://bitcoinfaucet.uo1.net/][Bitcoin
+Testnet Faucet]], distribute them on demand with a *request to return
+them back after testing*.
+
+To receive testnet bitcoins, you need to generate new addresses on
+both wallets (built-in Bitcoin Core one and standalone one) and use
+the the resource mentioned above. To generate a new address in Bitcoin
+Core, execute the command:
+
+#+BEGIN_SRC sh
+  bitcoin-cli -testnet getnewaddress
+#+END_SRC
+
+To generate a new address in a separate wallet, use the graphical
+interface "Receive".
+
+Wait for the funds to arrive on both wallets. In the built-in Bitcoin
+Core wallet, you can do this by periodically checking the balance:
+
+#+BEGIN_SRC sh
+  bitcoin-cli -testnet getbalance
+#+END_SRC
+
+In the standalone wallet, the graphical interface will automatically
+display information about the new transaction.
+
+After receiving the funds, you can make transactions from one wallet
+to another and vice versa. To do this, you first need to generate new
+addresses. Reusing addresses is not prohibited by the Bitcoin
+protocol, but it can have various negative consequences for the
+privacy of your transactions, so it is recommended to *always use a
+new address for each new transaction*. To send a transaction from
+Bitcoin Core, use the command:
+
+#+BEGIN_SRC sh
+  bitcoin-cli -testnet sendtoaddress <address> <amount>
+#+END_SRC
+
+and to send a transaction from a standalone wallet, use the graphical
+interface "Send".
 
 ** Demo and Questions
-TODO.
+When preparing a lab demo, do the following:
+  - choose a separate Bitcoin software wallet;
+  - explain your own choice (explanations like "I liked it because it
+    has a dark theme" are also acceptable :));
+  - install the chosen software wallet on the work device (consider
+    using an Android or iOS mobile device for the sake of acquiring
+    practical experience with mobile wallets);
+  - connect the software wallet to the test Bitcoin network (consider
+    trying to connect the wallet to your own Bitcoin Core node);
+  - perform the initial key generation and backup the key;
+  - demonstrate sending a transaction using ~bitcoin-cli~ to an
+    address generated in a standalone wallet;
+  - demonstrate sending a transaction from a separate wallet to an
+    address generated in the built-in wallet of your Bitcoin node;
+  - show both transactions in decoded form using ~bitcoin-cli~.
+
+After completing the demonstration of the lab work, *do not forget to
+return the testnet bitcoins back to the faucet. To do this, you can
+send all test bitcoins to the Bitcoin Core wallet and execute the
+command:
+
+#+BEGIN_SRC sh
+  bitcoin-cli -testnet -named sendtoaddress address=<faucet-address> \
+                                            amount=<total-amount> \
+                                            fee_rate=1 \
+                                            subtractfeefromamount=true
+#+END_SRC
