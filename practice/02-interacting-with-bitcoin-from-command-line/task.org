@@ -6,7 +6,7 @@ Participants in the Bitcoin network are divided into *full nodes* and
 that have a complete copy of the block chain, participate in block and
 transaction propagation, and perform full validation of blocks and
 transactions. An example of a *full node* is the Bitcoin Core server,
-the installation of which was described in [[file:~/Documents/nobsbitcoin/practice/01-running-your-own-bitcoin-node/task.org][task 1]]. *Light nodes*
+the installation of which was described in [[../01-running-your-own-bitcoin-node/task.org][task 1]]. *Light nodes*
 implement only a subset of the functions of full nodes and are used to
 perform specific types of interactions with the network. The most
 common type of light nodes is *Bitcoin wallet software*. A full
