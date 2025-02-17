@@ -1,0 +1,134 @@
+\documentclass{beamer}
+
+
+\usepackage{amsmath}
+\usepackage[style=alphabetic,url=true]{biblatex}
+\usepackage{environ}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{cancel}
+\usepackage{soul}
+
+
+% \usetheme{Bergen}
+
+\usecolortheme{beaver}
+
+\setbeamertemplate{itemize item}[circle]
+\setbeamertemplate{itemize subitem}{--}
+\addtobeamertemplate{navigation symbols}{}{
+  \usebeamerfont{footline}%
+  \usebeamercolor[fg]{footline}%
+  \hspace{1em}%
+  \insertframenumber/\inserttotalframenumber
+}
+\graphicspath{ {./graphics/} }
+
+
+\title{
+  Біткоїн та криптовалютні технології \\
+  Лекція 0: Огляд структури курсу
+}
+
+\author{Юрій Жикін}
+\date{17 лютого, 2025}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+  \frametitle{Контакти}
+  \begin{itemize}
+  \item @rodentrabies в Telegram
+  \item https://github.com/rodentrabies
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Структура курсу 1/2}
+  \begin{itemize}
+  \item Історія та економіка Біткоїна
+    \begin{itemize}
+    \item Економічні концепції та властивості грошей
+    \item Комп'ютерна криптографія та шифропанк-рух
+    \item Винахід та інновація Біткоїна
+    \end{itemize}
+  \item ``Крипто'' означає ``криптографія''
+    \begin{itemize}
+    \item Основи криптографія
+    \item Хеш-функції
+    \item Криптографія з відкритим ключем
+    \item Еліптичні криві
+    \item Криптографічні підписи
+    \end{itemize}
+  \item Модель даних ланцюга Біткоїна
+    \begin{itemize}
+    \item Транзакції
+    \item Транзакційні входи та виходи
+    \item Блоки
+    \item Ланцюг блоків та ``доказ виконаної роботи''
+    \end{itemize}
+  \item[] ...
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Структура курсу 2/2}
+  \begin{itemize}
+  \item[] ...
+  \item Детальний погляд на транзакції у Біткоїні
+    \begin{itemize}
+    \item Транзакційні скрипти
+    \item Валідація транзакцій
+    \item ``Біткоїн-гаманець''
+    \end{itemize}
+  \item Мережа Біткоїн
+    \begin{itemize}
+    \item Однорангова мережева архітектура
+    \item Басейн транзакцій та процес ``майнінгу''
+    \item Параметри та динаміка мережі
+    \end{itemize}
+  \item Протоколи другого рівня
+    \begin{itemize}
+    \item Проблема пропускної здатності
+    \item Мережі платіжних каналів
+    \item Незамінні токени
+    \end{itemize}
+  \item Інші криптовалютні системи
+    \begin{itemize}
+    \item Ethereum: максимальна гнучкість
+    \item Monero: максимальна приватність
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Контроль}
+  \begin{itemize}
+  \item 2 лабораторні роботи (перший рік)
+    \begin{itemize}
+    \item Встановлення та налаштування програмного забезпечення Біткоїн-вузла
+    \item Взаємодія з Біткоїн-мережею з командного рядка
+    \end{itemize}
+  \item 1 лабораторна робота (другий рік)
+    \begin{itemize}
+    \item Написання набору функцій для парсингу даних ланцюга блоків
+    \end{itemize}
+  \item Підсумковий тест
+    \begin{itemize}
+    \item 20/100 випадкових питань з одним/декількома варіантами відповіді
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

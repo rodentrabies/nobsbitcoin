@@ -1,0 +1,134 @@
+\documentclass{beamer}
+
+
+\usepackage{amsmath}
+\usepackage[style=alphabetic,url=true]{biblatex}
+\usepackage{environ}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{cancel}
+\usepackage{soul}
+
+
+% \usetheme{Bergen}
+
+\usecolortheme{beaver}
+
+\setbeamertemplate{itemize item}[circle]
+\setbeamertemplate{itemize subitem}{--}
+\addtobeamertemplate{navigation symbols}{}{
+  \usebeamerfont{footline}%
+  \usebeamercolor[fg]{footline}%
+  \hspace{1em}%
+  \insertframenumber/\inserttotalframenumber
+}
+\graphicspath{ {./graphics/} }
+
+
+\title{
+  Bitcoin and Cryptocurrency Technologies \\
+  Lecture 0: Class Structure Overview
+}
+
+\author{Yuri Zhykin}
+\date{Feb 17,  2025}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+  \frametitle{Contacts}
+  \begin{itemize}
+  \item @rodentrabies on Telegram
+  \item https://github.com/rodentrabies
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Course structure 1/2}
+  \begin{itemize}
+  \item History and economics of Bitcoin
+    \begin{itemize}
+    \item Economic concepts and properties of money
+    \item Computer cryptography and cypherpunk movement
+    \item Bitcoin invention and innovation
+    \end{itemize}
+  \item Crypto means Cryptography
+    \begin{itemize}
+    \item Cryptography basics
+    \item Hash functions
+    \item Public key cryptography
+    \item Elliptic curves
+    \item Cryptographic signatures
+    \end{itemize}
+  \item Bitcoin chain data model
+    \begin{itemize}
+    \item Transactions
+    \item Inputs and outputs
+    \item Blocks
+    \item Chain of blocks and Proof of Work
+    \end{itemize}
+  \item[] ...
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Course structure 2/2}
+  \begin{itemize}
+  \item[] ...
+  \item Deep dive into Bitcoin transactions
+    \begin{itemize}
+    \item Transaction scripts
+    \item Transaction validation
+    \item Bitcoin wallets
+    \end{itemize}
+  \item Bitcoin network
+    \begin{itemize}
+    \item Peer-to-peer network architecture
+    \item Mempool and mining
+    \item Network parameters and dynamics
+    \end{itemize}
+  \item Second layer protocols
+    \begin{itemize}
+    \item Scalability problem
+    \item Payment channel networks
+    \item Non-fungible tokens
+    \end{itemize}
+  \item Other cryptocurrency systems
+    \begin{itemize}
+    \item Ethereum: maximum flexibility
+    \item Monero: maximum privacy
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Assignments}
+  \begin{itemize}
+  \item 2 lab tasks (first year)
+    \begin{itemize}
+    \item Build and setup of a Bitcoin node software
+    \item Interaction with Bitcoin network from command line
+    \end{itemize}
+  \item 1 lab task (second year)
+    \begin{itemize}
+    \item Write a set of functions for parsing Bitcoin chain data
+    \end{itemize}
+  \item Final test
+    \begin{itemize}
+    \item 20/100 random single/multiple choice questions 
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
