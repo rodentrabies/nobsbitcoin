@@ -5,6 +5,8 @@ Cryptocurrency Technologies" course.
 
 ** Lectures
 Lecture slides (English):
+  - [[file:lectures/00-class-structure-overview/slides.pdf][Lecture 00 - Class Structure Overview]]
+    # [[file:lectures/00-class-structure-overview/slides.tex][LaTeX source]]
   - [[file:lectures/01-economics-and-history/slides.pdf][Lecture 01 - Economics and History]]
     # [[file:lectures/01-economics-and-history/slides.tex][LaTeX source]]
   - [[file:lectures/02-cryptography-basics-1/slides.pdf][Lecture 02 - Cryptography Basics 1/2]]
@@ -27,6 +29,8 @@ Lecture slides (English):
     # [[file:lectures/10-other-cryptocurrencies/slides.tex][LaTeX source]]
 
 Слайди лекцій (українською):
+  - [[file:lectures/00-class-structure-overview/slides-ukrainian.pdf][Лекція 00 - Огляд структури курсу]]
+    # [[file:lectures/00-class-structure-overview/slides-ukrainian.tex][LaTeX source]]
   - [[file:lectures/01-economics-and-history/slides-ukrainian.pdf][Лекція 01 - Економіка та історія]]
     # [[file:lectures/01-economics-and-history/slides-ukrainian.tex][LaTeX source]]
   - [[file:lectures/02-cryptography-basics-1/slides-ukrainian.pdf][Лекція 02 - Основи криптографії 1/2]]
@@ -44,7 +48,9 @@ Lecture slides (English):
 Practice tasks (English):
   - [[file:practice/01-running-your-own-bitcoin-node/task.org][Task 01 - Running Your Own Bitcoin Node]]
   - [[file:practice/02-interacting-with-bitcoin-from-command-line/task.org][Task 02 - Interacting with Bitcoin from Command Line]]
+  - [[file:practice/03-parsing-bitcoin-chain-data/task.org][Task 03 - Parsing Bitcoin Chain Data]]
 
 Практичні завдання (українською):
   - [[file:practice/01-running-your-own-bitcoin-node/task-ukrainian.org][Завдання 01 - Розгортання власної Біткоїн-ноди]]
   - [[file:practice/02-interacting-with-bitcoin-from-command-line/task-ukrainian.org][Завдання 02 - Взаємодія з Біткоїн-мережею з командного рядка]]
+  - [[file:practice/03-parsing-bitcoin-chain-data/task-ukrainian.org][Завдання 03 - Парсинг блоків та транзакцій Біткоїна]]
