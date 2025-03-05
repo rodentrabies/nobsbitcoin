@@ -52,7 +52,7 @@
 }
 
 \author{Yuri Zhykin}
-\date{May 5, 2022}
+\date{Mar 6, 2025}
 
 \begin{document}
 
@@ -63,38 +63,50 @@
   \begin{itemize}
   \item \textbf{Tx}
     \begin{itemize}
-    \item \textbf{version}
-    \item \textbf{inputs} (list of \textbf{TxInput}s)
-    \item \textbf{outputs} (list of \textbf{TxOutput}s)
-    \item \textbf{witnesses} (list of \textbf{Witness}es)
-    \item \textbf{locktime}
+    \item \textbf{inputs} (ordered list of \textbf{Input}s)
+    \item \textbf{outputs} (ordered list of \textbf{Output}s)
     \end{itemize}
-  \item \textbf{TxInput}
+  \item \textbf{Input}
     \begin{itemize}
-    \item \textbf{previous-tx-id}
-    \item \textbf{previous-tx-index}
-    \item \textbf{unlock-script}
+    \item \textbf{previous-tx-id} (Tx ID)
+    \item \textbf{previous-tx-index} (integer)
+    \item \textbf{unlock-script} (program)
     \end{itemize}
-  \item \textbf{TxOutput}
+  \item \textbf{Output}
     \begin{itemize}
-    \item \textbf{amount}
-    \item \textbf{lock-script}
+    \item \textbf{amount} (integer)
+    \item \textbf{lock-script} (program)
     \end{itemize}
   \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Transfer of Ownership}
+  \frametitle{Transfer of Ownership 1/2}
   \begin{itemize}
   \item Unspent transaction outputs (\textbf{UTXOs}) are records of bitcoin
     ownership - bitcoin is locked to owners via lock-scripts.
   \item Bitcoin transactions transfer bitcoin by \textit{destroying} subsets of
     all unspent \textit{outputs} (by providing \textit{inputs} that unlock the
     output scripts) and creating new unspent \textit{outputs}.
+  \item The set of all \textit{UTXOs} represents all bitcoin currently in
+    circulation.
   \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Transfer of Ownership 2/2}
   \begin{center}
     \includegraphics[width=0.8\textwidth]{transactions}
   \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Transaction Validation}
+  \begin{enumerate}
+  \item \textbf{Double spend check}: check that outputs referenced by inputs have not been spent yet.
+  \item \textbf{Inflation check}: check that the transaction does not create new base bitcoin units.
+  \item \textbf{Contract validation}: execute lock- and unlock-scripts.
+  \end{enumerate}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -105,9 +117,10 @@
     for expressing locking/unlocking logic in Bitcoin transactions.
   \item Script provides flexibility in defining the conditions for spending each
     particular ``chunk'' of bitcoin.
-  \item Because of \textit{Proof-of-Work}, Bitcoin is a first decentralized
-    money system, but because of \textit{Script} it is also the first
-    \textbf{programmable} money system.
+  \item \textit{Proof-of-Work} system provides \textbf{decentralized double
+      spend protection}.
+  \item \textit{Bitcoin Script} system provides \textbf{programmability}
+    (\textbf{smart contracts}).
   \end{itemize}
 \end{frame}
 
@@ -162,28 +175,26 @@
     network, so loops could be used as means of DoS-attacking the network.
   \item Loops introduce complexity that is hard to analyse statically (i.e. by
     ``looking'' at the code without executing it).
-  \item Ethereum network uses a Turing-complete language \textbf{Solidity},
-    which is partly the reason behind some of the worst security incidents in
-    the history of Ethereum.
+  \item Ethereum network uses a Turing-complete language called
+    \textbf{Solidity}.
   \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{Bitcoin Script Operations 1/3}
   \begin{itemize}
-  \item Script execution is the main part of transaction validation.
   \item \textit{Script interpreter} consists of a stack of commands and a stack
     of data.
   \item For each input in a transaction, it's unlock-script is executed first,
     then the resulting stack is used to execute the lock-script of the
     corresponding output:
     \begin{itemize}
-    \item initialize an empty stack $S_0 = S_{empty}$
-    \item execute the TxInput's unlock-script on stack $S_0$:
-      $$S_1 = Execute(UnlockScript, S_0)$$
-    \item execute corresponding TxOutput's lock-script on stack $S_1$:
-      $$S_2 = Execute(LockScript, S_1)$$
-    \item verify that the top of the stack is $True$.
+    \item initialize an empty stack $Stack_0 = Stack_{empty}$
+    \item execute the Input's unlock-script on $Stack_0$:
+      $$Stack_1 = Execute(Script_{Unlock}, Stack_0)$$
+    \item execute corresponding Output's lock-script on $Stack_1$:
+      $$Stack_2 = Execute(Script_{Lock}, Stack_1)$$
+    \item verify that the top of the $Stack_2$ is $True$.
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -194,40 +205,36 @@
   \item Values on the data stack are byte vectors, but they can be interpreted
     as numbers when needed.
   \item $False$ value is represented by a number 0, which in turn is represented
-    either by an empty byte vector or by singleton $[0x80]$ vector.
-  \item Any value that is not $False$ is considered $True$, i.e. any value other
-    than $[]$ or $[0x80]$ on the top of the stack after script execution means
-    that the transaction is valid from the ownership perspective.
+    either by an empty byte vector or by singleton vector $[0x80]$.
+  \item Any value that is not $False$ is considered $True$.
+  \item Any value other than $\{[], [0x80]\}$ at the top of the stack after script
+    execution means that the transaction contract is valid.
   \item Script execution can also fail, which is equivalent to immediately
-    returning $False$ i.e. failing the transaction validation.
+    returning $False$.
   \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{Bitcoin Script Operations 3/3}
   \begin{itemize}
-  \item Script operations are divided into the following categories:
+  \item \textbf{constants} - adding data to the stack
+  \item \textbf{logic and arithmetic}
+  \item \textbf{stack manipulation} - drop, copy, etc
+  \item \textbf{flow control} - branching, and
     \begin{itemize}
-    \item \textbf{constants} - adding data to the stack
-    \item \textbf{flow control} - branching, and
-      \begin{itemize}
-      \item \mintinline{Python}{OP_VERIFY} - fail if top of the stack is not
-        $True$
-      \item \mintinline{Python}{OP_RETURN} - fail (used to attach data to
-        transactions)
-      \end{itemize}
-    \item \textbf{stack manipulation} - dropping, copying, swapping elements on
-      the stack
-    \item \textbf{bitwise logic and arithmetic}
-    \item \textbf{cryptography} - cryptographic operations (hash functions)
-      \begin{itemize}
-      \item \mintinline{Python}{OP_CHECKSIG} - check signature against a public
-        key
-      \item \mintinline{Python}{OP_CHECKMULTISIG} - check multiple signature
-        against multiple public keys ($N/M$ signature mechanism)
-      \end{itemize}
-    \item \textbf{locktime} - locktime and sequence verification
+    \item \mintinline{Python}{OP_VERIFY} - fail if top of the stack is not
+      $True$
+    \item \mintinline{Python}{OP_RETURN} - fail; used to attach data to
+      transactions
     \end{itemize}
+  \item \textbf{cryptography} - cryptographic operations (hash functions)
+    \begin{itemize}
+    \item \mintinline{Python}{OP_CHECKSIG} - check signature against a public
+      key
+    \item \mintinline{Python}{OP_CHECKMULTISIG} - check multiple signature
+      against multiple public keys ($N/M$ signature mechanism)
+    \end{itemize}
+  \item \textbf{locktime} - locktime and sequence verification
   \end{itemize}
 \end{frame}
 
@@ -317,8 +324,7 @@
       Unlock &\tiny\mintinline[bgcolor=lightgray]{Lisp}{OP_0 <sig1> ... <sigM>;} \\
     \end{tabular}
   \item \textbf{P2SH} - pay-to-script-hash - a protocol upgrade introduced in
-    2012 to allow for custom lock-scripts while having an address format and a
-    size limit
+    2012 to allow for custom lock-scripts
     \break
     \begin{tabular}{rl}
       Lock &\tiny\mintinline[bgcolor=lightgray]{Lisp}{OP_HASH160 <scriptHash> OP_EQUAL;} \\
@@ -343,12 +349,33 @@
       \mintinline{Python}{<serializedRedeemScript>} and executing it as if it
       was the lock-script
     \end{itemize}
-  \item \textbf{Soft-fork} \textbf{tightens} the validation rules,
-    i.e. non-upgraded nodes consider new data always valid, while upgraded nodes
-    apply additional rules
-  \item \textbf{Hard-fork} \textbf{relaxes} validation rules, i.e. non-upgraded
-    nodes will reject new data, resulting in a network split, so all nodes must
-    be upgraded for hard-fork to succeed
+  \item \textbf{Soft-fork} \textbf{tightens} the validation rules
+    \begin{itemize}
+    \item non-upgraded nodes consider new data always valid, while upgraded
+      nodes apply additional rules
+    \end{itemize}
+  \item \textbf{Hard-fork} \textbf{relaxes} validation rules
+    \begin{itemize}
+    \item non-upgraded nodes will reject new data, resulting in a network split,
+      so all nodes must be upgraded for hard-fork to succeed
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Types of Network Forks}
+  \begin{itemize}
+  \item \textbf{Soft-fork} \textbf{tightens} the validation rules
+    \begin{itemize}
+    \item non-upgraded nodes consider new data always valid, while upgraded
+      nodes apply additional rules
+    \end{itemize}
+  \item \textbf{Hard-fork} \textbf{relaxes} validation rules
+    \begin{itemize}
+    \item non-upgraded nodes will reject new data, resulting in a network split,
+      so all nodes must be upgraded for hard-fork to succeed
+    \end{itemize}
+  \item \textbf{Hard-form} disconnects non-upgraded nodes from the main network.
   \end{itemize}
 \end{frame}
 
@@ -378,9 +405,9 @@
   \begin{itemize}
   \item For \textit{standard} transactions (i.e. transactions with standard
     lock/unlock scripts), there is a defined ``address'' format.    
-  \item Bitcoin address is s relatively short identifier that unambiguously
-    specifies the key information in the lock-script and can be used to identify
-    and/or reconstruct the corresponding lock-script
+  \item Bitcoin address is a short (relatively) identifier that unambiguously
+    describes a lock-script and is used instead of providing the entire
+    lock-script
     \begin{itemize}
     \item for \textit{P2PKH}, it's \mintinline{Python}{<pubKeyHash>}:
       $$A_{P2PKH} = Encode_{Base58Check}(HASH160(pubkey))$$
@@ -394,18 +421,20 @@
   \frametitle{Bitcoin Address 2/2}
   \begin{itemize}
   \item In order to remove any ambiguity and reduce the possibility of error,
-    Bitcoin addresses use the special \textbf{Base58Check} encoding:
+    legacy Bitcoin addresses use a special \textbf{Base58Check} encoding:
     $$Base58Check(t, s) = Base58(t + s + HASH256(t + s)[0:4])$$
   \item \textbf{Base58} encoding is similar to \textbf{base64} encoding but
     intentionally drops characters that can be mistaken for other characters: 0,
     O, I, and l.
   \item Value $t$ is used to identify the type of encoded information:
     \break
-    \begin{tabular}{ccl}
-      0 & 1 & P2PKH address \\
-      5 & 3 & P2SH address \\
-      111 & m or n & Testnet P2PKH address \\
-      196 & 2 & Testnet P2SH address \\
+    \break
+    \tiny
+    \begin{tabular}{cccl}
+      0 & 1 & \mintinline{Python}{"18vnsHEtfTZgaJD6Sv7QTpo2nwxkFxJgrp"} & P2PKH address \\
+      5 & 3 & \mintinline{Python}{"38Rctgcqj3cFhfGK7ynpWZQZgCTVuCoNFu"} & P2SH address \\
+      111 & m or n & \mintinline{Python}{"mkHS9ne12qx9pS9VojpwU5xtRd4T7X7ZUt"} & Testnet P2PKH address \\
+      196 & 2 & \mintinline{Python}{"2N4DTeBWDF9yaF9TJVGcgcZDM7EQtsGwFjX"} & Testnet P2SH address \\
     \end{tabular}
   \end{itemize}
 \end{frame}
@@ -413,15 +442,13 @@
 \begin{frame}[fragile]
   \frametitle{Bitcoin Wallet 1/2}
   \begin{itemize}
-  \item \textbf{So, what is a Bitcoin wallet?}
-  \item Generally, wallet is any item that contains information that can be used
-    to construct an unlock-script for some \textit{UTXO}, so must be kept secret.
-  \item Since most of transactions are \textit{standard}, typical Bitcoin wallet
-    only has to store cryptographic keys and usually is just software that can
-    store them in a reasonably secure way.
-  \item When user wants to receive bitcoin, they generate a new address, which
-    means that wallet software generates a new random private key $p_i$, computes a
-    public key $P_i$ from it and computes a new P2PKH address $A_i$ as follows
+  \item Generally, wallet is any information that can be used to construct an
+    unlock-script.
+  \item Typical Bitcoin wallet is a piece of software that manages cryptographic
+    keys and can construct \textit{standard} transactions.
+  \item When user wants to receive bitcoin to a P2PKH address, the wallet
+    generates a new random private key $p_i$, computes a public key $P_i$ from
+    it and computes a new P2PKH address $A_i$ as follows
     $$A_i = Encode_{Base58Check}(HASH160(P_i))$$
   \end{itemize}
 \end{frame}
@@ -429,19 +456,19 @@
 \begin{frame}[fragile]
   \frametitle{Bitcoin Wallet 2/2}
   \begin{itemize}
-  \item This address can then be shared with the sender to send the bitcoin,
-    which means that sender's wallet computes $h = Decode_{Base58Check}(A_i)$
-    and constructs a transaction that contains an output with the required
-    amount of bitcoin and the lock-script
+  \item The address $A_i$ is then shared with the sender, whose wallet computes
+    $H = Decode_{Base58Check}(A_i)$ and constructs a transaction that
+    contains an output with the required amount of bitcoin and the lock-script
     \begin{center}
-      \tiny\mintinline[bgcolor=lightgray]{Lisp}{OP_DUP OP_HASH160 <h> OP_EQUALVERIFY OP_CHECKSIG;}
+      \tiny\mintinline[bgcolor=lightgray]{Lisp}{OP_DUP OP_HASH160 <H> OP_EQUALVERIFY OP_CHECKSIG;}
     \end{center}
-  \item Once the transaction is published and confirmed, user ``owns'' that
-    newly locked bitcoin and their wallet software can be used to spend it.
-  \item In order to spend bitcoin locked in a particular output, wallet software
-    finds the private key that corresponds to that address in the output, and
-    constructs a transaction that contains the input with the unlock-script,
-    that consists of the corresponding public key and a signature.
+  \item Once the transaction is published and confirmed, the receiver now
+    ``owns'' that newly locked bitcoin as their wallet has a key for spending
+    it.
+  \item In order to spend bitcoin locked in a particular P2PKH output, wallet
+    software finds the corresponding private key and creates an input for a
+    transaction with an unlock-script that contains the corresponding public key
+    and a signature.
   \end{itemize}
 \end{frame}
 
