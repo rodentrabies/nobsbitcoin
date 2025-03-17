@@ -41,6 +41,8 @@ Lecture slides (English):
     # [[file:lectures/04-bitcoin-data-model/slides-ukrainian.tex][LaTeX source]]
   - [[file:lectures/05-bitcoin-transactions/slides-ukrainian.pdf][Лекція 05 - Біткоїн-транзакції]]
     # [[file:lectures/05-bitcoin-transactions/slides-ukrainian.tex][LaTeX source]]
+  - [[file:lectures/06-bitcoin-network/slides-ukrainian.pdf][Лекція 06 - Біткоїн-мережа]]
+    # [[file:lectures/06-bitcoin-network/slides-ukrainian.tex][LaTeX source]]
 
 
 
