@@ -43,6 +43,8 @@ Lecture slides (English):
     # [[file:lectures/05-bitcoin-transactions/slides-ukrainian.tex][LaTeX source]]
   - [[file:lectures/06-bitcoin-network/slides-ukrainian.pdf][Лекція 06 - Біткоїн-мережа]]
     # [[file:lectures/06-bitcoin-network/slides-ukrainian.tex][LaTeX source]]
+  - [[file:lectures/07-bitcoin-protocol/slides-ukrainian.pdf][Лекція 07 - Біткоїн-протокол]]
+    # [[file:lectures/07-bitcoin-protocol/slides-ukrainian.tex][LaTeX source]]
 
 
 
