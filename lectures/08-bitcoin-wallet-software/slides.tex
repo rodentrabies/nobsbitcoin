@@ -31,9 +31,8 @@
   \insertframenumber/\inserttotalframenumber
 }
 \graphicspath{ {./graphics/} }
-\setminted[Python]{
-  fontsize=\tiny
-}
+\definecolor{code-background}{gray}{0.85}
+\setminted[Python]{fontsize=\tiny}
 \BeforeBeginEnvironment{minted}{\medskip}
 \AfterEndEnvironment{minted}{\medskip}
 \usetikzlibrary{matrix}
@@ -54,7 +53,7 @@
 }
 
 \author{Yuri Zhykin}
-\date{Jun 9, 2022}
+\date{Mar 27, 2025}
 
 \begin{document}
 
@@ -63,7 +62,7 @@
 \begin{frame}
   \frametitle{UTXO Set}
   \begin{itemize}
-  \item All bitcoin in existence is represented by a \textbf{UTXO set} - a set
+  \item All bitcoin in circulation is represented by a \textbf{UTXO set} - a set
     of all unspent transaction outputs.
   \item Every ``coin'' (\textbf{UTXO}) consists of the amount of
     \textbf{satoshis} and the corresponding lock script.
@@ -81,12 +80,12 @@
   \item \textbf{Owning bitcoin} means that some entity can provide the correct
     \textbf{unlock script} to the \textbf{lock script} of some of the outputs in
     \textbf{UTXO set}.
-  \item Lock scripts are visible publicly, so ideally every ``piece'' of bitcoin
-    should have a different lock script.
+  \item Lock scripts are visible publicly, so ideally every UTXO should have a
+    different lock script.
   \item Otherwise, it is immediately visible how much bitcoin a certain entity
     owns.
-  \item Any software, hardware or object that stores data needed to construct
-    unlock scripts is technically a \textbf{Bitcoin wallet}.
+  \item \textbf{Bitcoin wallet} is usually a piece of software for storing data
+    needed to construct unlock scripts for the associated UTXOs.
   \end{itemize}
 \end{frame}
 
@@ -96,32 +95,32 @@
   \item \textbf{P2PK} - Pay to Public Key
     \break
     \begin{tabular}{rl}
-      &\tiny\mintinline[bgcolor=lightgray]{Lisp}{<pubKey> OP_CHECKSIG;} \\
+      &\tiny\mintinline[bgcolor=code-background]{Lisp}{<pubKey> OP_CHECKSIG;} \\
     \end{tabular}
   \item \textbf{P2MS} - Pay to Multi-Signature
     \break
     \begin{tabular}{rl}
-      &\tiny\mintinline[bgcolor=lightgray]{Lisp}{<M> <pk1> ... <pkN> <N> OP_CHECKMULTISIG;} \\
+      &\tiny\mintinline[bgcolor=code-background]{Lisp}{<M> <pk1> ... <pkN> <N> OP_CHECKMULTISIG;} \\
     \end{tabular}
   \item \textbf{P2PKH} - Pay to Public Key Hash
     \break
     \begin{tabular}{rl}
-      &\tiny\mintinline[bgcolor=lightgray]{Lisp}{OP_DUP OP_HASH160 <pubKeyHash> OP_EQUALVERIFY OP_CHECKSIG;} \\
+      &\tiny\mintinline[bgcolor=code-background]{Lisp}{OP_DUP OP_HASH160 <pubKeyHash> OP_EQUALVERIFY OP_CHECKSIG;} \\
     \end{tabular}
   \item \textbf{P2SH} - Pay to Script Hash
     \break
     \begin{tabular}{rl}
-      &\tiny\mintinline[bgcolor=lightgray]{Lisp}{OP_HASH160 <scriptHash> OP_EQUAL;} \\
+      &\tiny\mintinline[bgcolor=code-background]{Lisp}{OP_HASH160 <scriptHash> OP_EQUAL;} \\
     \end{tabular}
   \item \textbf{P2WPKH} - Pay to \textbf{Witness} Public Key Hash
     \break
     \begin{tabular}{rl}
-      &\tiny\mintinline[bgcolor=lightgray]{Lisp}{OP_0 <20-byte-witness-data>;} \\
+      &\tiny\mintinline[bgcolor=code-background]{Lisp}{OP_0 <20-byte-witness-data>;} \\
     \end{tabular}
   \item \textbf{P2WSH} - Pay to \textbf{Witness} Script Hash
     \break
     \begin{tabular}{rl}
-      &\tiny\mintinline[bgcolor=lightgray]{Lisp}{OP_0 <32-byte-witness-data>;} \\
+      &\tiny\mintinline[bgcolor=code-background]{Lisp}{OP_0 <32-byte-witness-data>;} \\
     \end{tabular}
   \end{itemize}
 \end{frame}
@@ -138,7 +137,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Bitcoin Addresses 1/3}
+  \frametitle{Bitcoin Addresses 1/4}
   \begin{itemize}
   \item Bitcoin uses several human-oriented encodings to encode addresses and
     keys:
@@ -170,13 +169,13 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Bitcoin Addresses 2/3}
+  \frametitle{Bitcoin Addresses 2/4}
   \begin{itemize}
   \item \textbf{P2PK} and \textbf{P2MS} do not have defined address formats.
-  \item \textbf{P2PKH} address format is defined as follows
+  \item \textbf{P2PKH} address format
     \break
     \begin{tabular}{rl}
-      &\tiny\mintinline[bgcolor=lightgray]{Lisp}{OP_DUP OP_HASH160 <pubKeyHash>
+      &\tiny\mintinline[bgcolor=code-background]{Lisp}{OP_DUP OP_HASH160 <pubKeyHash>
         OP_EQUALVERIFY OP_CHECKSIG;} \\
       &${\scriptstyle A_{\mathit{p2pkh}} = \mathit{Base58Check}(0x00 +
         pubKeyHash)}$ \\
@@ -185,10 +184,16 @@
         pubKeyHash)}$ \\
       &{\scriptsize \quad\quad\quad \textbf{m}ipcBbFg9gMiCh81Kj8tqqdgoZub1ZJRfn} \\
     \end{tabular}
-  \item \textbf{P2SH} address format is defined as follows
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Bitcoin Addresses 3/4}
+  \begin{itemize}
+  \item \textbf{P2SH} address format
     \break
     \begin{tabular}{rl}
-      &\tiny\mintinline[bgcolor=lightgray]{Lisp}{OP_HASH160 <scriptHash> OP_EQUAL;} \\
+      &\tiny\mintinline[bgcolor=code-background]{Lisp}{OP_HASH160 <scriptHash> OP_EQUAL;} \\
       &${\scriptstyle A_{\mathit{p2sh}} = \mathit{Base58Check}(0x05 +
         scriptHash)}$ \\
       &{\scriptsize \quad\quad\quad \textbf{3}EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX} \\
@@ -200,12 +205,12 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Bitcoin Addresses 3/3}
+  \frametitle{Bitcoin Addresses 4/4}
   \begin{itemize}
-  \item \textbf{P2WPKH/P2WSH} address format is defined as follows
+  \item \textbf{P2WPKH/P2WSH} address format
     \break
     \begin{tabular}{rl}
-      &\tiny\mintinline[bgcolor=lightgray]{Lisp}{OP_0 <20-or-32-byte witnessData>;} \\
+      &\tiny\mintinline[bgcolor=code-background]{Lisp}{OP_0 <20-or-32-byte witnessData>;} \\
       &${\scriptstyle A_{\mathit{p2wpkh/p2wsh}} = \mathit{Bech32}("bc" +
         witnessVersion + witnessData)}$ \\
       &{\scriptsize \quad\quad\quad \textbf{bc1}qw508d6qejxtdg4y5r3zarvary0c5xw7k\textbf{v8f3t4}} \\
@@ -217,7 +222,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Cryptographic Key Storage}
+  \frametitle{Cryptographic Key Storage 1/2}
   \begin{itemize}
   \item All standard lock/unlock scripts are based on providing a signature
     matching the public key, whose hash is included in the script (either lock
@@ -226,14 +231,22 @@
       that differs} is \textbf{the hash of the public key}.
   \item The only piece of data needed to construct a standard unlock script for
     the standard lock script is the \textit{corresponding private key}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Cryptographic Key Storage 2/2}
+  \begin{itemize}
   \item All bitcoin wallets currently in use are simply \textbf{cryptographic
-      key stores}:
+      key stores} with additional functionality:
     \begin{itemize}
     \item securely store private keys for owned ``coins'',
     \item generate new private keys/public keys/addresses,
     \item for every new block or transaction, verify if its lock script
       corresponds to a standard lock/unlock script that matches any of the
-      stored keys (\textbf{optional}).
+      stored keys (optional),
+    \item construct new transactions by combining a subset of known UTXOs and a
+      set of new UTXOs and providing corresponding unlock scripts (optional).
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -247,7 +260,7 @@
     owned by the same entity.
   \item Since \textit{reusing addresses} is bad, the solution is to simply
     generate a new key for every new incoming transaction.
-  \item Wallet is just a file containing a list of keys for all ``coins'' owned.
+  \item Wallet is a file containing a list of keys for all ``coins'' owned.
   \item Backup is needed after every received transaction.
   \item The size of the key storage continues to grow and its unsafe to remove
     old keys as their addresses might still get used in the future.
@@ -322,10 +335,11 @@
     \item Hardware wallets are dedicated \textbf{air-gapped} devices that
       specialized at generating and storing cryptographic keys:
       \begin{itemize}
-      \item \textbf{Trezor Model T, Trezor One}
-      \item \textbf{Ledger Nano S}
-      \item \textbf{Coldcard}
-      \item \textbf{BitBox02}
+      \item \textbf{Trezor devices}
+      \item \textbf{Ledger devices}
+      \item \textbf{Coinkite's Coldcard}
+      \item \textbf{Blockstream's Jade}
+      \item \textbf{Shift Crypto's BitBox02}
       \end{itemize}
     \end{itemize}
   \end{minipage}
@@ -338,11 +352,17 @@
   \frametitle{Security: Cold Storage}
   \begin{itemize}
   \item \textbf{Cold storage} is any method of storage that does not involve
-    devices at all.
+    software or devices at all.
   \item HD seed can be written on a piece of paper and stored in a secure place,
     or even simply memorized.
   \item In order to use the bitcoin from cold storage, one needs to install the
     key on one a signing-capable device and only then create a transaction.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Security: General Approach}
+  \begin{itemize}
   \item \textbf{Resonably secure approach} to storing bitcoin:
     \begin{itemize}
     \item generate a new key with a dedicated hardware device (e.g. hardware
@@ -354,6 +374,7 @@
     \end{itemize}
   \end{itemize}
 \end{frame}
+
 
 \begin{frame}
   \frametitle{The End}
