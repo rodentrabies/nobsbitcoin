@@ -23,10 +23,12 @@ Lecture slides (English):
     # [[file:lectures/07-bitcoin-protocol/slides.tex][LaTeX source]]
   - [[file:lectures/08-bitcoin-wallet-software/slides.pdf][Lecture 08 - Bitcoin Wallet Software]]
     # [[file:lectures/08-bitcoin-wallet-software/slides.tex][LaTeX source]]
-  - [[file:lectures/09-bitcoin-scaling/slides.pdf][Lecture 09 - Bitcoin Scaling]]
-    # [[file:lectures/09-bitcoin-scaling/slides.tex][LaTeX source]]
-  - [[file:lectures/10-other-cryptocurrencies/slides.pdf][Lecture 10 - Other Cryptocurrencies]]
-    # [[file:lectures/10-other-cryptocurrencies/slides.tex][LaTeX source]]
+  - [[file:lectures/09-bitcoin-scaling-1/slides.pdf][Lecture 09 - Bitcoin Scaling 1/2]]
+    # [[file:lectures/09-bitcoin-scaling-1/slides.tex][LaTeX source]]
+  - [[file:lectures/10-bitcoin-scaling-2/slides.pdf][Lecture 10 - Bitcoin Scaling 2/2]]
+    # [[file:lectures/10-bitcoin-scaling-2/slides.tex][LaTeX source]]
+  - [[file:lectures/11-other-cryptocurrencies/slides.pdf][Lecture 11 - Other Cryptocurrencies]]
+    # [[file:lectures/11-other-cryptocurrencies/slides.tex][LaTeX source]]
 
 Слайди лекцій (українською):
   - [[file:lectures/00-class-structure-overview/slides-ukrainian.pdf][Лекція 00 - Огляд структури курсу]]
@@ -45,7 +47,10 @@ Lecture slides (English):
     # [[file:lectures/06-bitcoin-network/slides-ukrainian.tex][LaTeX source]]
   - [[file:lectures/07-bitcoin-protocol/slides-ukrainian.pdf][Лекція 07 - Біткоїн-протокол]]
     # [[file:lectures/07-bitcoin-protocol/slides-ukrainian.tex][LaTeX source]]
-
+  - [[file:lectures/08-bitcoin-wallet-software/slides-ukrainian.pdf][Лекція 08 - Біткоїн-гаманці]]
+    # [[file:lectures/08-bitcoin-wallet-software/slides-ukrainian.tex][LaTeX source]]
+  - [[file:lectures/09-bitcoin-scaling-1/slides-ukrainian.pdf][Лекція 09 - Масштабування Біткоїна 1/2]]
+    # [[file:lectures/09-bitcoin-scaling-1/slides-ukrainian.tex][LaTeX source]]
 
 
 ** Practice
