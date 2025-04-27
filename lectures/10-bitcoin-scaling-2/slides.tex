@@ -1,0 +1,189 @@
+\documentclass{beamer}
+
+
+\usepackage{amsmath}
+\usepackage[style=alphabetic,url=true]{biblatex}
+\usepackage{environ}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[cache=false]{minted}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{calrsfs}
+\usepackage{animate}
+\usepackage{xmpmulti}
+
+
+% \usetheme{Bergen}
+
+\usecolortheme{beaver}
+
+\setbeamertemplate{itemize item}[circle]
+\setbeamertemplate{itemize subitem}{--}
+\addtobeamertemplate{navigation symbols}{}{
+  \usebeamerfont{footline}%
+  \usebeamercolor[fg]{footline}%
+  \hspace{1em}%
+  \insertframenumber/\inserttotalframenumber
+}
+\graphicspath{ {./graphics/} }
+\setminted[Python]{
+  fontsize=\tiny
+}
+\setminted[Lisp]{
+  fontsize=\tiny
+}
+\BeforeBeginEnvironment{minted}{\medskip}
+\AfterEndEnvironment{minted}{\medskip}
+\usetikzlibrary{matrix}
+\tikzset{
+  stack/.style={
+    matrix of nodes,
+    nodes={
+      fill=lightgray,draw,text=black,font=\sffamily\bfseries,
+      text height=11pt,text depth=3pt,baseline=center, minimum width=1cm
+    },
+    column sep=-\pgflinewidth/2
+  }
+}
+
+\title{
+  Bitcoin and Cryptocurrency Technologies \\
+  Lecture 10: Bitcoin Scalability 2/2
+}
+
+\author{Yuri Zhykin}
+\date{Apr 28, 2025}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+  \frametitle{Second Layer Solutions}
+  \begin{itemize}
+  \item Perform transactions in a second-layer network and use main Bitcoin
+    network (chain) as a settlement layer.
+  \item Signed Bitcoin transaction is a payment that can be ``claimed'' by
+    publishing it to the Bitcoin network.
+  \item Second-layer payments can be implemented with signed Bitcoin
+    transactions that are only published when settlement is needed.
+  \item Until \textbf{settlement transaction} is published, \textbf{double
+      spending} is still possible.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Payment Channels 1/2}
+  \begin{itemize}
+  \item \textbf{Payment channel} is a construction that allows \textbf{two}
+    parties to transact Bitcoin without submitting any transactions to the
+    Bitcoin network.
+  \item \textbf{Bidirectional payment channel} is somewhat similar to a payment
+    check that splits a joint bank account between two parties.
+    \begin{itemize}
+    \item joint bank account with ballance N;
+    \item both parties A and B ``own'' $N/2$ portions of the ballance;
+    \item both parties sign a check that pays $N/2$ money to A and B;
+    \item when party A wants to pay $M$ money to party B, they \textbf{sign a
+        new check} that pays $N/2 - M$ to party A and $N/2 + M$ to party B and
+      \textbf{destroy the old checks}.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Payment Channels 2/2}
+  \begin{itemize}
+  \item Several proposals: Spillman, CLTV, Poon-Dryja, Decker-Wattenhofer duplex
+    payment channels, Decker-Russell-Osuntokun eltoo Channels.
+  \item Poon-Dryja payment channels were presented in the Lightning Network
+    paper.
+  \item Channel backing funds are locked into a 2-of-2 multisig.
+  \item Before the funding transaction is even signed, commitment transactions
+    for each party are first written and signed.
+  \item As it requires referring to transactions that have not been signed yet,
+    it requires using a transaction format that separates signatures from the
+    part of the transaction that is hashed to generate the txid, such as
+    Segregated Witness.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Lightning Network 1/2}
+  \begin{itemize}
+  \item A network of bidirectional payment channels that allows to execute
+    multi-hop payments, propagating funds through a series of payment channels.
+  \item Proposed in 2015, mainnet network started operation in early 2018.
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{ln}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Lightning Network 2/2}
+  \begin{itemize}
+  \item Entity $A$ wants to pay entity $B$ and there is a path within the network
+    between them $A, C_1, C_2, ..., C_n, B$:
+    \begin{itemize}
+    \item $B$ generates a random value $R$ and computes a hash $H = hash(R)$ and
+      provides $H$ to $A$;
+    \item $A$ and creates an additional HTLC (Hash Timelock Contract) output and
+      updates it's channel with $C_1$:
+      \begin{minted}{Lisp}
+  IF 
+    HASH160 <H> EQUAL
+    <B public key> CHECKSIG
+  ELSE
+    <locktime> CHECKLOCKTIMEVERIFY
+    <A public key> CHECKSIG
+  ENDIF
+      \end{minted}
+    \item $C_1$ updates its payment channels with $C_2$ and so on, until $C_n$
+      updates channel with $B$.
+    \item $B$ provides $R$ to $C_n$ and pulls funds, $C_n$ provides $R$ to
+      $C_{n-1}$ and so on until $C_1$ pulls funds from $A$.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Lightning Network Usage}
+  \begin{itemize}
+  \item 17,616 nodes (20,478 nodes in 2021),
+  \item 84,931 channels (45,774 channels in 2021),
+  \item 4,017.60 BTC = \$84,142,806 (1,332.25 BTC = \$52,290,595 in 2021),
+  \item Ongoing research, improvements and new feature development,
+  \item Games, online shops and other businesses.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Recommended Resources}
+  \begin{itemize}
+  \item \textbf{Bitcoin: A Work in Progress}
+    \begin{itemize}
+    \item book by Sjors Provoost, Bitcoin Core contributor
+    \item https://btcwip.com
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{The End}
+  \begin{center}
+    Thank you!
+  \end{center}
+\end{frame}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
