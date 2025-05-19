@@ -128,6 +128,40 @@
 \begin{frame}[fragile]
   \frametitle{Lightning Network 2/2}
   \begin{itemize}
+  \item Every channel is a 2-of-2 multisig ``joint account''
+  \item Funding transaction:
+    \begin{minted}{Lisp}
+      OP_2 <A public key> <B public key> OP_2 OP_CHECKMULTISIG
+    \end{minted}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Lightning Network 3/2}
+  \begin{itemize}
+  \item Two payout transactions are created immediately, one for each
+    participant.
+  \item Remote output looks like this:
+    \begin{minted}{Lisp}
+      <remote public key> OP_CHECKSIG
+    \end{minted}
+  \item Local output looks like this:
+    \begin{minted}{Lisp}
+      OP_IF
+          <revocation public key>
+      OP_ELSE
+          <delay> OP_CHECKSEQUENCEVERIFY OP_DROP
+          <local delayed pubkey>
+      OP_ENDIF
+      OP_CHECKSIG          
+    \end{minted}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Lightning Network 2/2}
+  \begin{itemize}
   \item Entity $A$ wants to pay entity $B$ and there is a path within the network
     between them $A, C_1, C_2, ..., C_n, B$:
     \begin{itemize}
@@ -136,13 +170,13 @@
     \item $A$ and creates an additional HTLC (Hash Timelock Contract) output and
       updates it's channel with $C_1$:
       \begin{minted}{Lisp}
-  IF 
-    HASH160 <H> EQUAL
-    <B public key> CHECKSIG
-  ELSE
-    <locktime> CHECKLOCKTIMEVERIFY
-    <A public key> CHECKSIG
-  ENDIF
+        OP_IF
+          HASH160 <H> OP_EQUAL
+          <B public key> OP_CHECKSIG
+        OP_ELSE
+          <locktime> OP_CHECKLOCKTIMEVERIFY
+          <A public key> OP_CHECKSIG
+        OP_ENDIF
       \end{minted}
     \item $C_1$ updates its payment channels with $C_2$ and so on, until $C_n$
       updates channel with $B$.
@@ -155,9 +189,9 @@
 \begin{frame}
   \frametitle{Lightning Network Usage}
   \begin{itemize}
-  \item 17,616 nodes (20,478 nodes in 2021),
-  \item 84,931 channels (45,774 channels in 2021),
-  \item 4,017.60 BTC = \$84,142,806 (1,332.25 BTC = \$52,290,595 in 2021),
+  \item 11,380 nodes (20,478 nodes in 2021),
+  \item 42,459 channels (45,774 channels in 2021),
+  \item 4,230.60 BTC = \$400,334,511 (1,332.25 BTC = \$52,290,595 in 2021),
   \item Ongoing research, improvements and new feature development,
   \item Games, online shops and other businesses.
   \end{itemize}
@@ -166,10 +200,14 @@
 \begin{frame}
   \frametitle{Recommended Resources}
   \begin{itemize}
-  \item \textbf{Bitcoin: A Work in Progress}
+  \item \textbf{Basis of Lightning Technology}
     \begin{itemize}
-    \item book by Sjors Provoost, Bitcoin Core contributor
-    \item https://btcwip.com
+    \item  https://github.com/lightning/bolts
+    \end{itemize}
+  \item \textbf{Mastering the Lightning Network}
+    \begin{itemize}
+    \item by Andreas Antonopoulos, Olaoluwa Osuntokun, and René Pickhardt.
+    \item https://github.com/lnbook/lnbook
     \end{itemize}
   \end{itemize}
 \end{frame}
